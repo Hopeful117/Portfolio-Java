@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragments/head :: head('Accueil')}"></th:block>
+
+<body>
+
+<h1>Administration</h1>
+
+<ul>
+
+  <li>
+    <a th:href="@{/admin/projects}">
+      Gérer les projets
+    </a>
+  </li>
+
+</ul>
+
+</body>
+</html>

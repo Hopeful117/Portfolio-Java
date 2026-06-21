@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragments/head :: head('Login')}"></th:block>
+
+<body>
+
+<h1>Connexion</h1>
+
+<form th:action="@{/login}" method="post">
+
+    <div>
+        <label class="form-label">Utilisateur</label>
+        <input type="text"
+               name="username"
+        class="form-control">
+    </div>
+
+    <div>
+        <label class="form-label">Mot de passe</label>
+        <input type="password"
+               name="password"
+        class="form-control">
+    </div>
+
+    <button type="submit"
+    class="btn btn-primary">
+        Se connecter
+    </button>
+
+</form>
+
+</body>
+</html>
