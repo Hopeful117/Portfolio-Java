@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
-@Table(name="Technologies")
+@Table(name="Technology")
 @Getter
 @Setter
-public class Technologies implements ModelEntity {
+public class Technology implements ModelEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -16,4 +18,8 @@ public class Technologies implements ModelEntity {
     private String name;
 
     private String iconeUrl;
+
+    @ManyToMany(mappedBy = "technologies")
+    private List<Project> projects;
 }
+

@@ -22,8 +22,12 @@ public class Project implements ModelEntity {
     private String description;
 
     @ManyToMany
-    @JoinTable(name="Technologies")
-    private List<Technologies> technologies;
+    @JoinTable(
+            name = "project_technology",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "technology_id")
+    )
+    private List<Technology> technologies;
 
     private String githubUrl;
 

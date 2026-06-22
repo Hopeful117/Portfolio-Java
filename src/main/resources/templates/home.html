@@ -7,7 +7,7 @@
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<main class="container mt-5">
+<main class="container my-5">
     <section class="hero text-center">
 
         <h1 class="display-4 fw-bold">
@@ -45,22 +45,18 @@
         </h2>
 
         <div class="row text-center">
+            <div th:each="tech : ${technologies}" class="tech-item">
 
-            <div class="col-md-3">
-                <h4>Java</h4>
+                <img th:src="${tech.iconeUrl}"
+                     th:alt="${tech.name}"
+                     width="128"
+                     height="128"
+                />
+
+
+
             </div>
 
-            <div class="col-md-3">
-                <h4>Spring Boot</h4>
-            </div>
-
-            <div class="col-md-3">
-                <h4>PostgreSQL</h4>
-            </div>
-
-            <div class="col-md-3">
-                <h4>Docker</h4>
-            </div>
 
         </div>
 
@@ -109,6 +105,7 @@
 
 
 </main>
+<div class="d-flex w-100"></div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 

@@ -1,6 +1,7 @@
 package com.hopefull117.portfolio.java.dto;
 
-import com.hopefull117.portfolio.java.model.Technologies;
+
+import com.hopefull117.portfolio.java.model.Technology;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ public class ProjectsDTO {
     @NotBlank
     private String description;
 
-    private List<Technologies> technologies;
+    private List<Technology> technologies;
 
     @NotBlank
     private String imageUrl;
