@@ -10,6 +10,7 @@
             Mes projets
         </h1>
 
+
         <div class="row">
 
             <div class="col-md-6 mb-4"
@@ -26,12 +27,26 @@
                         <p th:text="${project.description}">
                             Description
                         </p>
+                        <div>
+                            <img th:src="${project.imagePath}">
+                        </div>
 
                         <p>
                             <strong>Technologies :</strong>
-                            <span th:text="${project.technologies}">
-                        </span>
                         </p>
+                        <div th:each="tech : ${project.technologies}" class="tech-item">
+
+                            <img th:src="${tech.iconeUrl}"
+                                 th:alt="${tech.name}"
+                                 width="128"
+                                 height="128"
+                            />
+
+
+
+                        </div>
+
+                     
 
                         <a th:href="${project.githubUrl}"
                            target="_blank"

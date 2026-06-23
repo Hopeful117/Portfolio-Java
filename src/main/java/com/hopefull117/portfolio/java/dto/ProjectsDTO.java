@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,10 +22,9 @@ public class ProjectsDTO {
     @NotBlank
     private String description;
 
-    private List<Technology> technologies;
+    private List<Long> technologies;
 
-    @NotBlank
-    private String imageUrl;
+    private MultipartFile image;
 
     @NotBlank
     private String githubUrl;

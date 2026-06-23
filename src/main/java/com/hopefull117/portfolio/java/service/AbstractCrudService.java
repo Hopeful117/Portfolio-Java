@@ -1,11 +1,13 @@
 package com.hopefull117.portfolio.java.service;
 
 
+import com.hopefull117.portfolio.java.dto.ProjectsDTO;
 import com.hopefull117.portfolio.java.exception.EntityNotFoundException;
 import com.hopefull117.portfolio.java.model.ModelEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -46,5 +48,6 @@ public abstract class AbstractCrudService<M extends ModelEntity> implements Crud
         }
         jpaRepository.deleteById(id);
     }
+
 
 }

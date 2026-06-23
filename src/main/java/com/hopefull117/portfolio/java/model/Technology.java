@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name="Technology")
+@Table(name="technology")
 @Getter
 @Setter
 public class Technology implements ModelEntity {

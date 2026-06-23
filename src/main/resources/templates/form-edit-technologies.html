@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<th:block th:replace="~{fragments/head :: head('edit technologies')}"></th:block>
+<body>
+<h2 class="h2">Ajouter une technologie</h2>
+<form th:action="@{/admin/technologies/edit/{id}(id=${technology.id})}" th:object="${technology}" method="post">
+
+    <input type="hidden" th:field="*{id}">
+    <div class="mb-3">
+        <label class="form-label">Nom
+            <input type="text" th:field="*{name}" class="form-control" placeholder="${technology.name}">
+        </label>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Icone
+            <input type="url" th:field="*{iconeUrl}" class="form-control" placeholder="${technology.iconeUrl}">
+        </label>
+    </div>
+    <button type="submit" class="btn btn-primary">
+        Enregistrer
+    </button>
+</form>
+
+</body>
+</html>

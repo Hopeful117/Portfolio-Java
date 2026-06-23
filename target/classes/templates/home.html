@@ -79,18 +79,20 @@
 
         <div class="row">
 
-            <div class="col-md-6">
+            <div class="col-md-6" th:each="project : ${projects}">
 
                 <div class="card">
 
                     <div class="card-body">
 
-                        <h5>Portfolio Java</h5>
+                        <h5 th:text="${project.title}"></h5>
 
-                        <p>
-                            Portfolio développé avec
-                            Spring Boot et Thymeleaf.
+                        <p th:text="${project.description}">
+
                         </p>
+                        <div>
+                            <img th:src="${project.imagePath}">
+                        </div>
 
                     </div>
 

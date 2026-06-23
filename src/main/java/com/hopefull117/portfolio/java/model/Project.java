@@ -31,5 +31,5 @@ public class Project implements ModelEntity {
 
     private String githubUrl;
 
-    private String imageUrl;
+    private String imagePath;
 }

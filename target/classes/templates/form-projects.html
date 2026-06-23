@@ -3,7 +3,7 @@
 <th:block th:replace="~{fragments/head :: head('dashboard projets')}"></th:block>
 <body>
 <h2 class="h2">Ajouter un projet</h2>
-<form th:action="@{/admin/projects}" th:object="${projects}" method="post">
+<form th:action="@{/admin/projects}" th:object="${projects}" method="post" enctype="multipart/form-data">
 
 
         <div class="mb-3">
@@ -21,7 +21,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <label class="form-label mb-0">Technologies</label>
 
-                <!-- Bouton d'ajout -->
+
                 <a th:href="@{/admin/technologies}"
                    class="btn btn-sm btn-outline-primary">
                     + Ajouter une technologie
@@ -45,9 +45,10 @@
 
         <div class="mb-3">
             <label class="form-label">Image URL</label>
-            <input type="text"
+            <input type="file"
                    class="form-control"
-                   th:field="*{imageUrl}">
+                   name="image"
+                   th:field="*{image}">
         </div>
 
         <div class="mb-3">
