@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{fragments/head :: head('Projets')}"></th:block>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<main>
-    <div class="container mt-5">
+<main class="container my-5">
+
 
         <h1 class="mb-4">
             Mes projets
@@ -16,25 +16,25 @@
             <div class="col-md-6 mb-4"
                  th:each="project : ${projects}">
 
-                <div class="card h-100">
+                <div class="card">
 
                     <div class="card-body">
 
-                        <h4 th:text="${project.title}">
+                        <h4 class="card-header" th:text="${project.title}">
                             Titre
                         </h4>
 
-                        <p th:text="${project.description}">
+                        <p class="card-text" th:text="${project.description}">
                             Description
                         </p>
                         <div>
-                            <img th:src="${project.imagePath}">
+                            <img th:src="${project.imagePath}" class="card-img-top">
                         </div>
 
-                        <p>
+                        <div class="my-5 ">
                             <strong>Technologies :</strong>
-                        </p>
-                        <div th:each="tech : ${project.technologies}" class="tech-item">
+                        <div class="d-flex justify-content-center">
+                        <div  th:each="tech : ${project.technologies}" >
 
                             <img th:src="${tech.iconeUrl}"
                                  th:alt="${tech.name}"
@@ -45,8 +45,9 @@
 
 
                         </div>
+                        </div>
 
-                     
+
 
                         <a th:href="${project.githubUrl}"
                            target="_blank"
@@ -62,7 +63,7 @@
 
             </div>
 
-        </div>
+
 
     </div>
 </main>

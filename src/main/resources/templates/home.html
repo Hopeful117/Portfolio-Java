@@ -44,8 +44,8 @@
             Technologies principales
         </h2>
 
-        <div class="row text-center">
-            <div th:each="tech : ${technologies}" class="tech-item">
+        <div class="d-flex justify-content-center">
+            <div th:each="tech : ${technologies}">
 
                 <img th:src="${tech.iconeUrl}"
                      th:alt="${tech.name}"
@@ -85,13 +85,13 @@
 
                     <div class="card-body">
 
-                        <h5 th:text="${project.title}"></h5>
+                        <h5 class="card-header" th:text="${project.title}"></h5>
 
-                        <p th:text="${project.description}">
+                        <p class="card-text" th:text="${project.description}">
 
                         </p>
                         <div>
-                            <img th:src="${project.imagePath}">
+                            <img th:src="${project.imagePath}" class="card-img-top">
                         </div>
 
                     </div>
