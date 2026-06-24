@@ -47,6 +47,11 @@
                    th:href="@{'/admin/projects/edit/' + ${project.id}}">
                     Modifier
                 </a>
+                <a class="btn btn-danger btn-sm"
+                   th:href="@{'/admin/projects/delete/' + ${project.id}}"
+                   onclick="return confirm('Supprimer ce projet ?');">
+                    Supprimer
+                </a>
 
             </td>
 

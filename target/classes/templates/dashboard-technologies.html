@@ -40,6 +40,11 @@
                    th:href="@{'/admin/technologies/edit/' + ${tech.id}}">
                     Modifier
                 </a>
+                <a class="btn btn-danger btn-sm"
+                   th:href="@{'/admin/technologies/delete/' + ${tech.id}}"
+                   onclick="return confirm('Supprimer cette étape ?');">
+                    Supprimer
+                </a>
 
             </td>
 

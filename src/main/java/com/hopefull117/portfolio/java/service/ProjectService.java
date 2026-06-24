@@ -78,7 +78,7 @@ public class ProjectService extends AbstractCrudService<Project> {
     }
 
     public List<Project> getLastThreeProject(){
-        return projectRepository.findTop3ByOrderByCreatedAtDesc();
+        return projectRepository.findTop3ByOrderByIdDesc() ;
     }
 
 

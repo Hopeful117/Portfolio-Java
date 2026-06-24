@@ -85,6 +85,12 @@ public class AdminController {
 
 
     }
+    @GetMapping("/projects/delete/{id}")
+    public String deleteProject(@PathVariable("id") Long id){
+        log.info("Tentative de suppression du projet {}", id);
+        projectService.deleteById(id);
+        return "redirect:/admin/projects";
+    }
 
     @GetMapping("/technologies")
     public String getTechnologiesDashboard(Model model){
@@ -117,7 +123,14 @@ public class AdminController {
     public String editTechnologie (@Valid Technology technology,@PathVariable("id") Long id){
         log.info("Tentative de modification de la technologie {}",id);
         technologieService.update(id,technology);
-        return "redirect:/admin/dashboard";
+        return "redirect:/admin/technologies";
+    }
+
+    @GetMapping("/technologies/delete/{id}")
+    public String deleteTechnologie(@PathVariable("id")Long id){
+        log.info("Tentative de suppression de la technologie {}",id);
+        technologieService.deleteById(id);
+        return "redirect:/admin/technologies";
     }
 
     @GetMapping("/skills")
@@ -163,6 +176,15 @@ public class AdminController {
         skillService.update(id,skill);
         return "redirect:/admin/skills";
     }
+
+    @GetMapping("/skills/delete/{id}")
+    public String deleteSkill(@PathVariable("id") Long id){
+        log.info("tentative de suppression de la compétence {}",id);
+        skillService.deleteById(id);
+        return "redirect:/admin/skills";
+
+        }
+
     @GetMapping("/timeline")
     public String getTimelineDashboard(Model model){
         log.info("tentative d'accès au panneau de gestion de la timeline" );
@@ -196,6 +218,13 @@ public class AdminController {
     public String editTimeline(@Valid TimelineEntry timelineEntry, @PathVariable("id")Long id){
         log.info("tentative de modification de la timeline {}", id);
         timelineEntryService.update(id,timelineEntry);
+        return "redirect:/admin/timeline";
+    }
+
+    @GetMapping("/timeline/delete/{id}")
+    public String deleteTimeline(@PathVariable("id") Long id){
+        log.info("tentative de suppression de timeline {}", id);
+        timelineEntryService.deleteById(id);
         return "redirect:/admin/timeline";
     }
 
