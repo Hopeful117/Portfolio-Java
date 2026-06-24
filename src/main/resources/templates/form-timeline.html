@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<th:block th:replace="~{fragments/head :: head('Ajouter une étape du parcours')}"></th:block>
+
+<body>
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Ajouter une étape du parcours</h2>
+
+    <form th:action="@{/admin/timeline}"
+          th:object="${timelineEntry}"
+          method="post">
+
+        <div class="mb-3">
+            <label class="form-label">Titre</label>
+            <input type="text"
+                   th:field="*{title}"
+                   class="form-control"
+                   placeholder="Ex : Certification CS50x">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Type</label>
+            <select th:field="*{type}"
+                    class="form-select">
+
+                <option value="">-- Sélectionner un type --</option>
+
+                <option th:each="type : ${timelineTypes}"
+                        th:value="${type}"
+                        th:text="${type}">
+                </option>
+
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date"
+                   th:field="*{date}"
+                   class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea th:field="*{description}"
+                      rows="5"
+                      class="form-control"
+                      placeholder="Décrivez cette étape de votre parcours...">
+            </textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Lien (optionnel)</label>
+            <input type="url"
+                   th:field="*{link}"
+                   class="form-control"
+                   placeholder="https://...">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Ordre d'affichage</label>
+            <input type="number"
+                   th:field="*{displayOrder}"
+                   class="form-control"
+                   min="1">
+        </div>
+
+        <button type="submit"
+                class="btn btn-primary">
+            Enregistrer
+        </button>
+
+        <a th:href="@{/admin/timeline}"
+           class="btn btn-secondary">
+            Annuler
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

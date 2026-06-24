@@ -4,14 +4,17 @@ import com.hopefull117.portfolio.java.dto.ProjectEditDTO;
 import com.hopefull117.portfolio.java.dto.ProjectsDTO;
 import com.hopefull117.portfolio.java.helper.Category;
 import com.hopefull117.portfolio.java.helper.SkillLevel;
+import com.hopefull117.portfolio.java.helper.TimelineType;
 import com.hopefull117.portfolio.java.mapper.ProjectMapper;
 import com.hopefull117.portfolio.java.model.Project;
 
 import com.hopefull117.portfolio.java.model.Skill;
 import com.hopefull117.portfolio.java.model.Technology;
+import com.hopefull117.portfolio.java.model.TimelineEntry;
 import com.hopefull117.portfolio.java.service.ProjectService;
 import com.hopefull117.portfolio.java.service.SkillService;
 import com.hopefull117.portfolio.java.service.TechnologieService;
+import com.hopefull117.portfolio.java.service.TimelineEntryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +34,7 @@ public class AdminController {
     private final ProjectService projectService;
     private final ProjectMapper projectMapper;
     private final SkillService skillService;
+    private final TimelineEntryService timelineEntryService;
 
 
     @GetMapping("/dashboard")
@@ -158,6 +162,41 @@ public class AdminController {
         log.info("tentative de modification de la compétence {}",id);
         skillService.update(id,skill);
         return "redirect:/admin/skills";
+    }
+    @GetMapping("/timeline")
+    public String getTimelineDashboard(Model model){
+        log.info("tentative d'accès au panneau de gestion de la timeline" );
+        model.addAttribute("timelineEntries",timelineEntryService.getTimeline());
+        return "dashboard-timeline";
+
+    }
+
+    @GetMapping("/timeline/add")
+    public String getAddTimelineForm(Model model){
+        log.info("tentative d'accès au formulaire de création de timeline");
+        model.addAttribute("timelineEntry", new TimelineEntry());
+        model.addAttribute("timelineTypes", TimelineType.values());
+        return "form-timeline";
+    }
+    @PostMapping("/timeline")
+    public String createTimeline(@Valid TimelineEntry timelineEntry){
+        log.info("tentative d'ajout d'un élément dans la timeline");
+        timelineEntryService.create(timelineEntry);
+        return "redirect:/admin/timeline";
+    }
+    @GetMapping("/timeline/edit/{id}")
+    public String getEditTimelineForm(Model model,@PathVariable("id")Long id){
+        log.info("tentative d'accès au formulaire de la timeline{}", id);
+        model.addAttribute("timelineEntry",timelineEntryService.findById(id));
+        model.addAttribute("timelineTypes",TimelineType.values());
+        return "form-edit-timeline";
+
+    }
+    @PostMapping("/timeline/edit/{id}")
+    public String editTimeline(@Valid TimelineEntry timelineEntry, @PathVariable("id")Long id){
+        log.info("tentative de modification de la timeline {}", id);
+        timelineEntryService.update(id,timelineEntry);
+        return "redirect:/admin/timeline";
     }
 
 

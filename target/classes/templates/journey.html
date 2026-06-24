@@ -4,29 +4,43 @@
 <th:block th:replace="~{fragments/head :: head('Journey')}"></th:block>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<main class="container mt-5">
-    <h1>Mon parcours</h1>
+<section id="parcours" class="mt-5">
 
-    <ul class="list-group mt-4">
+    <h2 class="mb-4">Parcours</h2>
 
-        <li class="list-group-item">
-            2024 - Obtention du certificat CS50x
-        </li>
+    <div th:each="entry : ${timelineEntries}"
+         class="card mb-3 shadow-sm">
 
-        <li class="list-group-item">
-            2025 - Formation Développeur Web OpenClassrooms
-        </li>
+        <div class="card-body">
 
-        <li class="list-group-item">
-            2026 - Spécialisation Java
-        </li>
+            <div class="d-flex justify-content-between">
 
-        <li class="list-group-item">
-            Objectif : Cloud, DevOps et DevSecOps
-        </li>
+                <h5 th:text="${entry.title}"></h5>
 
-    </ul>
-</main>
+                <span class="badge text-bg-secondary"
+                      th:text="${entry.type}">
+                </span>
+
+            </div>
+
+            <p class="text-muted"
+               th:text="${#temporals.format(entry.date,'MM/yyyy')}">
+            </p>
+
+            <p th:text="${entry.description}"></p>
+
+            <a th:if="${entry.link != null && !entry.link.isBlank()}"
+               th:href="${entry.link}"
+               target="_blank"
+               class="btn btn-outline-primary btn-sm">
+                Voir le certificat
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>

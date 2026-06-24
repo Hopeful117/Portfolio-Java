@@ -9,4 +9,5 @@ public interface ModelEntity <M extends ModelEntity<M>>{
 
 
 
+
 }
