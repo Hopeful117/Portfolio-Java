@@ -7,10 +7,12 @@ import com.hopefull117.portfolio.java.model.Project;
 import com.hopefull117.portfolio.java.model.Technology;
 import com.hopefull117.portfolio.java.repository.ProjectRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.ListQueryByExampleExecutor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService extends AbstractCrudService<Project> {
@@ -73,6 +75,10 @@ public class ProjectService extends AbstractCrudService<Project> {
         }
 
         projectRepository.save(project);
+    }
+
+    public List<Project> getLastThreeProject(){
+        return projectRepository.findTop3ByOrderByCreatedAtDesc();
     }
 
 

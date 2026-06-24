@@ -19,7 +19,7 @@ public class HomeController {
         public String home(Model model) {
             log.info("Accès à la page d'accueil");
             model.addAttribute("title", "Portfolio");
-            model.addAttribute("projects",projectService.getAll());
+            model.addAttribute("projects",projectService.getLastThreeProject());
             model.addAttribute("technologies",technologieService.getAll());
             return "home";
         }
