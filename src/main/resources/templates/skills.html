@@ -3,98 +3,59 @@
 <th:block th:replace="~{fragments/head :: head('Skills')}"></th:block>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<main class="container mt-5">
-    <h1 class="mb-4">
-        Compétences
-    </h1>
-    <div class="column g-4">
+<main class="container py-5">
 
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Compétences</h1>
+        <p class="text-muted">
+            Technologies et outils que j'utilise au quotidien.
+        </p>
+    </div>
 
-        <div class="col-md-auto">
-            <div class="card shadow-sm h-100">
-                <div class="card-header bg-dark text-white d-flex gap-3">
-                    <h4 class="mb-0" >Backend</h4>
+    <div class="row g-4">
 
-                </div>
+        <div class="col-12"
+             th:each="group : ${skillCategories}">
 
-                <div class="card-body p-0">
-                    <table class="table table-hover mb-0" id="test">
-                        <tbody>
-                        <tr>
-                            <td>Java</td>
-                        </tr>
-                        <tr>
-                            <td>Spring Boot</td>
-                        </tr>
-                        <tr>
-                            <td>Django</td>
-                        </tr>
-                        <tr>
-                            <td>Flask</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+            <div class="card shadow-sm border-0">
 
-
-        <div class="col-md-auto">
-            <div class="card shadow-sm h-100">
                 <div class="card-header bg-dark text-white">
-                    <h4 class="mb-0">Frontend</h4>
+                    <h2 class="h4 mb-0"
+                        th:text="${group.category()}">
+                    </h2>
                 </div>
 
-                <div class="card-body p-0">
-                    <table class="table table-hover mb-0">
-                        <tbody>
-                        <tr>
-                            <td>HTML</td>
-                        </tr>
-                        <tr>
-                            <td>CSS</td>
-                        </tr>
-                        <tr>
-                            <td>JavaScript</td>
-                        </tr>
-                        <tr>
-                            <td>React</td>
-                        </tr>
-                        <tr>
-                            <td>Thymeleaf</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="card-body">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6 col-lg-4"
+                             th:each="skill : ${group.skills()}">
+
+                            <div class="card h-100 border-light shadow-sm">
+
+                                <div class="card-body">
+
+                                    <h5 class="card-title fw-bold"
+                                        th:text="${skill.name}">
+                                    </h5>
+
+                                    <span class="badge rounded-pill text-bg-primary"
+                                          th:text="${skill.skillLevel}">
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
+
             </div>
-        </div>
 
-
-        <div class="col-md-auto">
-            <div class="card shadow-sm h-100">
-                <div class="card-header bg-dark text-white">
-                    <h4 class="mb-0">Outils</h4>
-                </div>
-
-                <div class="card-body p-0">
-                    <table class="table table-hover mb-0">
-                        <tbody>
-                        <tr>
-                            <td>Git</td>
-                        </tr>
-                        <tr>
-                            <td>Docker</td>
-                        </tr>
-                        <tr>
-                            <td>Linux</td>
-                        </tr>
-                        <tr>
-                            <td>GitHub Actions</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
 
     </div>

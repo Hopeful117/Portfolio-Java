@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<th:block th:replace="~{fragments/head :: head('Ajouter une compétence')}"></th:block>
+
+<body>
+
+<h2 class="h2">Modifier une compétence</h2>
+
+<form th:action="@{/admin/skills/edit/{id}(id=${skill.id})}"
+      th:object="${skill}"
+      method="post">
+
+    <div class="mb-3">
+        <label for="name" class="form-label">Nom</label>
+        <input
+                id="name"
+                type="text"
+                th:field="*{name}"
+                class="form-control"
+                placeholder=${skill.name}>
+    </div>
+
+    <div class="mb-3">
+        <label for="category" class="form-label">Catégorie</label>
+        <select
+                id="category"
+                th:field="*{category}"
+                class="form-select">
+
+            <option value="">-- Sélectionner une catégorie --</option>
+
+            <option
+                    th:each="category : ${categories}"
+                    th:value="${category}"
+                    th:text="${category}">
+            </option>
+
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="skillLevel" class="form-label">Niveau</label>
+        <select
+                id="skillLevel"
+                th:field="*{skillLevel}"
+                class="form-select">
+
+            <option value="">-- Sélectionner un niveau --</option>
+
+            <option
+                    th:each="level : ${levels}"
+                    th:value="${level}"
+                    th:text="${level}">
+            </option>
+
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Enregistrer
+    </button>
+
+</form>
+
+</body>
+</html>

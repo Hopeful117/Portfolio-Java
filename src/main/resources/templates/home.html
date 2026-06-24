@@ -44,8 +44,8 @@
             Technologies principales
         </h2>
 
-        <div class="d-flex justify-content-center">
-            <div th:each="tech : ${technologies}">
+        <div class="d-flex flex-column align-items-center gap-3 justify-content-center flex-md-row">
+            <div th:each="tech : ${technologies}" class="mx-5">
 
                 <img th:src="${tech.iconeUrl}"
                      th:alt="${tech.name}"

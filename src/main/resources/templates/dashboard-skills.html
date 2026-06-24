@@ -8,8 +8,8 @@
 <div class="container mt-4">
 
 
-    <h2>Dashboard Admin - Technologies</h2>
-    <a th:href="@{/admin/technologies/add}" class="btn btn-primary">Ajouter une technologie</a>
+    <h2>Dashboard Admin - Skills</h2>
+    <a th:href="@{/admin/skills/add}" class="btn btn-primary">Ajouter une compétence</a>
 
     <table class="table table-striped table-hover mt-3">
 
@@ -17,27 +17,31 @@
         <tr>
             <th>ID</th>
             <th>Nom</th>
-            <th>CDN icone</th>
-            <th>Actions</th>
+            <th>Categorie</th>
+            <th>Niveau</th>
+            <th>Action</th>
         </tr>
         </thead>
 
         <tbody>
 
-        <tr th:each="tech : ${technologies}">
+        <tr th:each="skill : ${skills}">
 
-            <td th:text="${tech.id}"></td>
+            <td th:text="${skill.id}"></td>
 
-            <td th:text="${tech.name}"></td>
+            <td th:text="${skill.name}"></td>
 
-            <td th:text="${tech.iconeUrl}"></td>
+            <td th:text="${skill.category}"></td>
+
+            <td th:text="${skill.skillLevel}"></td>
+
 
 
 
             <td>
 
                 <a class="btn btn-primary btn-sm"
-                   th:href="@{'/admin/technologies/edit/' + ${tech.id}}">
+                   th:href="@{'/admin/skills/edit/' + ${skill.id}}">
                     Modifier
                 </a>
 

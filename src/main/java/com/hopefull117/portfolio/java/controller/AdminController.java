@@ -2,11 +2,15 @@ package com.hopefull117.portfolio.java.controller;
 
 import com.hopefull117.portfolio.java.dto.ProjectEditDTO;
 import com.hopefull117.portfolio.java.dto.ProjectsDTO;
+import com.hopefull117.portfolio.java.helper.Category;
+import com.hopefull117.portfolio.java.helper.SkillLevel;
 import com.hopefull117.portfolio.java.mapper.ProjectMapper;
 import com.hopefull117.portfolio.java.model.Project;
 
+import com.hopefull117.portfolio.java.model.Skill;
 import com.hopefull117.portfolio.java.model.Technology;
 import com.hopefull117.portfolio.java.service.ProjectService;
+import com.hopefull117.portfolio.java.service.SkillService;
 import com.hopefull117.portfolio.java.service.TechnologieService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,7 @@ public class AdminController {
     private final TechnologieService technologieService;
     private final ProjectService projectService;
     private final ProjectMapper projectMapper;
+    private final SkillService skillService;
 
 
     @GetMapping("/dashboard")
@@ -94,7 +99,7 @@ public class AdminController {
     public String createTechnologies(@Valid Technology technology){
         log.info("Tentative d'ajout d'une technologie");
         technologieService.create(technology);
-        return "redirect:/admin/projects";
+        return "redirect:/admin/technologies";
     }
     @GetMapping("/technologies/edit/{id}")
     public String getEditTechnologieForm(Model model, @Valid Technology technology ,@PathVariable("id")Long id){
@@ -109,6 +114,50 @@ public class AdminController {
         log.info("Tentative de modification de la technologie {}",id);
         technologieService.update(id,technology);
         return "redirect:/admin/dashboard";
+    }
+
+    @GetMapping("/skills")
+    public String getSkillDashboard(Model model){
+        log.info("Tentative d'accès au panneau de gestion des compétences");
+        model.addAttribute("skills",skillService.getAll());
+        return "dashboard-skills";
+
+    }
+
+    @GetMapping("/skills/add")
+    public String getAddSkillsForm(Model model){
+        log.info("Tentative d'accès au panneau d'ajout d'un skill");
+
+        model.addAttribute("skill", new Skill());
+        model.addAttribute("categories", Category.values());
+        model.addAttribute("levels", SkillLevel.values());
+
+        return "form-skills";
+
+    }
+
+    @PostMapping("/skills")
+    public String createSkill(@Valid Skill skill){
+        log.info("Tentative de création d'un skill");
+        skillService.create(skill);
+        return "redirect:/admin/skills";
+    }
+
+    @GetMapping("/skills/edit/{id}")
+    public String getEditSkillForm(Model model,@PathVariable("id")Long id){
+        log.info("Tentative d'accès au formulaire de la compétence {}",id);
+        model.addAttribute("skill",skillService.findById(id));
+        model.addAttribute("categories", Category.values());
+        model.addAttribute("levels", SkillLevel.values());
+        return "form-edit-skills.html";
+
+    }
+
+    @PostMapping("/skills/edit/{id}")
+    public String editSkill(@Valid Skill skill, @PathVariable("id") Long id){
+        log.info("tentative de modification de la compétence {}",id);
+        skillService.update(id,skill);
+        return "redirect:/admin/skills";
     }
 
 
