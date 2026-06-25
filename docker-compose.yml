@@ -25,6 +25,8 @@ services:
 
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+      
 
   portfolio:
     build: .
@@ -45,12 +47,16 @@ services:
 
     networks:
       - portfolio-network
+    
+    volumes:
+      - uploads:/app/uploads
 
 
     restart: unless-stopped
 
 volumes:
   postgres_data:
+  uploads:
 
 
 networks:
