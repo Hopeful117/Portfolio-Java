@@ -1,0 +1,58 @@
+services:
+
+  postgres:
+    image: postgres:17
+
+    container_name: portfolio-postgres
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+    networks:
+     - portfolio-network
+
+    restart: unless-stopped
+
+
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  portfolio:
+    build: .
+
+    container_name: portfolio-app
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+    networks:
+      - portfolio-network
+
+
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+
+networks:
+  portfolio-network:
+    driver: bridge
