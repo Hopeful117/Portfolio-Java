@@ -76,13 +76,15 @@
 
     background:var(--bg-card);
 
-    border:1px solid var(--border-color);
+
 
     border-radius:20px;
 
     padding:1.8rem;
 
     box-shadow:var(--shadow-md);
+
+    border:solid;
 
 }
 
