@@ -1,0 +1,51 @@
+<div th:fragment="sidebar" class="admin-sidebar">
+
+    <div class="sidebar-brand">
+        <h2>HopeCodeSec</h2>
+        <span>Portfolio Admin</span>
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a th:href="@{/admin/dashboard}">
+            <i class="bi bi-grid-1x2-fill"></i>
+            Dashboard
+        </a>
+
+        <a th:href="@{/admin/projects}">
+            <i class="bi bi-folder-fill"></i>
+            Projects
+        </a>
+
+        <a th:href="@{/admin/blog}">
+            <i class="bi bi-journal-text"></i>
+            Blog
+        </a>
+
+        <a th:href="@{/admin/technologies}">
+            <i class="bi bi-cpu-fill"></i>
+            Technologies
+        </a>
+
+        <a th:href="@{/admin/skills}">
+            <i class="bi bi-lightning-fill"></i>
+            Skills
+        </a>
+
+        <a th:href="@{/admin/timeline}">
+            <i class="bi bi-clock-history"></i>
+            Timeline
+        </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+
+        <a th:href="@{/}">
+            <i class="bi bi-house"></i>
+            Retour au portfolio
+        </a>
+
+    </div>
+
+</div>

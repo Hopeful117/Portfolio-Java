@@ -1,65 +1,128 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:replace="~{fragments/head :: head('Gestion technologies')}"></th:block>
+<th:block th:replace="~{fragments/admin-head :: head('Gestion compétences')}"></th:block>
 
 <body>
 
-<div class="container mt-4">
+<div class="admin-layout">
 
 
-    <h2>Dashboard Admin - Skills</h2>
-    <a th:href="@{/admin/skills/add}" class="btn btn-primary">Ajouter une compétence</a>
-
-    <table class="table table-striped table-hover mt-3">
-
-        <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Categorie</th>
-            <th>Niveau</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-
-        <tbody>
-
-        <tr th:each="skill : ${skills}">
-
-            <td th:text="${skill.id}"></td>
-
-            <td th:text="${skill.name}"></td>
-
-            <td th:text="${skill.category}"></td>
-
-            <td th:text="${skill.skillLevel}"></td>
+    <th:block th:replace="~{fragments/admin-sidebar :: sidebar}"></th:block>
 
 
+    <main class="admin-content">
 
 
-            <td>
+        <th:block th:replace="~{fragments/admin-header :: header('Skills')}"></th:block>
 
-                <a class="btn btn-primary btn-sm"
-                   th:href="@{'/admin/skills/edit/' + ${skill.id}}">
-                    Modifier
-                </a>
-                <a class="btn btn-danger btn-sm"
-                   th:href="@{'/admin/skills/delete/' + ${skill.id}}"
-                   onclick="return confirm('Supprimer cette compétence ?');">
-                    Supprimer
-                </a>
 
-            </td>
+        <section class="page-actions">
 
-        </tr>
+            <a th:href="@{/admin/skills/add}"
+               class="btn-admin">
 
-        </tbody>
-    </table>
-    <a th:href="@{/admin/dashboard}" class="btn btn-danger">Retour</a>
+                <i class="bi bi-plus-circle"></i>
+                Ajouter une compétence
+
+            </a>
+
+        </section>
+
+
+        <section class="card-admin table-card">
+
+
+            <table class="admin-table">
+
+                <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Catégorie</th>
+                    <th>Niveau</th>
+                    <th>Actions</th>
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                <tr th:each="skill : ${skills}">
+
+
+                    <td th:text="${skill.id}"></td>
+
+
+                    <td>
+
+                        <strong th:text="${skill.name}"></strong>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="badge-admin"
+                              th:text="${skill.category}">
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="skill-level"
+                              th:text="${skill.skillLevel}">
+                        </span>
+
+                    </td>
+
+
+                    <td class="actions">
+
+
+                        <a class="btn-admin btn-small"
+                           th:href="@{'/admin/skills/edit/' + ${skill.id}}">
+
+                            <i class="bi bi-pencil"></i>
+                            Modifier
+
+                        </a>
+
+
+                        <a class="btn-danger"
+                           th:href="@{'/admin/skills/delete/' + ${skill.id}}"
+                           onclick="return confirm('Supprimer cette compétence ?');">
+
+                            <i class="bi bi-trash"></i>
+                            Supprimer
+
+                        </a>
+
+
+                    </td>
+
+
+                </tr>
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </section>
+
+
+    </main>
+
+
 </div>
-
-
 
 
 </body>

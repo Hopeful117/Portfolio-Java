@@ -33,13 +33,13 @@
 
                         <div class="my-5 ">
                             <strong>Technologies :</strong>
-                        <div class="d-flex justify-content-center">
+                        <div class="d-flex justify-content-center gap-3">
                         <div  th:each="tech : ${project.technologies}" >
 
                             <img th:src="${tech.iconeUrl}"
                                  th:alt="${tech.name}"
-                                 width="128"
-                                 height="128"
+                                 width="64"
+                                 height="64"
                                  class="my-5"
                             />
 

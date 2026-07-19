@@ -1,38 +1,95 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:replace="~{fragments/head :: head('Accueil')}"></th:block>
+<th:block th:replace="~{fragments/admin-head :: head('Dashboard')}"></th:block>
 
 <body>
 
-<h1>Administration</h1>
+<div class="admin-layout">
 
-<ul>
+    <th:block th:replace="~{fragments/admin-sidebar :: sidebar}"/>
 
-  <li>
-    <a th:href="@{/admin/projects}">
-      Gérer les projets
-    </a>
-  </li>
-    <li>
-        <a th:href="@{/admin/technologies}">
-            Gérer les technologies
-        </a>
-    </li>
+    <main class="admin-content">
 
-    <li>
-        <a th:href="@{/admin/skills}">
-            Gérer les compétences
-        </a>
-    </li>
-    <li>
-        <a th:href="@{/admin/timeline}">
-            Gérer la timeline
-        </a>
-    </li>
+        <th:block th:replace="~{fragments/admin-header :: header('Dashboard')}"/>
 
+        <section class="dashboard-grid">
 
-</ul>
+            <div class="card-admin">
+
+                <i class="bi bi-folder-fill card-icon"></i>
+
+                <h3>Projects</h3>
+
+                <p>Manage your portfolio projects.</p>
+
+                <a class="btn-admin" th:href="@{/admin/projects}">
+                    Open
+                </a>
+
+            </div>
+
+            <div class="card-admin">
+
+                <i class="bi bi-journal-text card-icon"></i>
+
+                <h3>Blog</h3>
+
+                <p>Write and publish development articles.</p>
+
+                <a class="btn-admin" th:href="@{/admin/blog}">
+                    Open
+                </a>
+
+            </div>
+
+            <div class="card-admin">
+
+                <i class="bi bi-cpu-fill card-icon"></i>
+
+                <h3>Technologies</h3>
+
+                <p>Manage the technologies displayed in your portfolio.</p>
+
+                <a class="btn-admin" th:href="@{/admin/technologies}">
+                    Open
+                </a>
+
+            </div>
+
+            <div class="card-admin">
+
+                <i class="bi bi-lightning-fill card-icon"></i>
+
+                <h3>Skills</h3>
+
+                <p>Update your technical and soft skills.</p>
+
+                <a class="btn-admin" th:href="@{/admin/skills}">
+                    Open
+                </a>
+
+            </div>
+
+            <div class="card-admin">
+
+                <i class="bi bi-clock-history card-icon"></i>
+
+                <h3>Timeline</h3>
+
+                <p>Edit your professional journey and milestones.</p>
+
+                <a class="btn-admin" th:href="@{/admin/timeline}">
+                    Open
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
 
 </body>
 </html>

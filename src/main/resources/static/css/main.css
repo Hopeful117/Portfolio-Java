@@ -13,3 +13,19 @@ body {
 section {
     margin-bottom: 80px;
 }
+:root{
+
+    --bg:#111827;
+    --surface:#1f2937;
+    --card:#374151;
+
+    --primary:#3b82f6;
+    --primary-hover:#60a5fa;
+
+    --text:#f9fafb;
+    --text-muted:#9ca3af;
+
+    --border:#4b5563;
+    --radius:18px;
+
+}

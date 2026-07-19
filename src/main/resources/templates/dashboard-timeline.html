@@ -1,96 +1,153 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:replace="~{fragments/head :: head('Gestion parcours')}"></th:block>
+<th:block th:replace="~{fragments/admin-head :: head('Gestion parcours')}"></th:block>
 
 <body>
 
-<div class="container mt-4">
+<div class="admin-layout">
 
-    <h2>Dashboard Admin - Parcours</h2>
 
-    <a th:href="@{/admin/timeline/add}"
-       class="btn btn-primary">
-        Ajouter une étape
-    </a>
+    <th:block th:replace="~{fragments/admin-sidebar :: sidebar}"></th:block>
 
-    <table class="table table-striped table-hover mt-3">
 
-        <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Titre</th>
-            <th>Type</th>
-            <th>Date</th>
-            <th>Lien</th>
-            <th>Ordre</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
+    <main class="admin-content">
 
-        <tbody>
 
-        <tr th:each="entry : ${timelineEntries}">
+        <th:block th:replace="~{fragments/admin-header :: header('Timeline')}"></th:block>
 
-            <td th:text="${entry.id}"></td>
 
-            <td th:text="${entry.title}"></td>
+        <section class="page-actions">
 
-            <td>
-                <span class="badge"
-                      th:classappend="
-                        ${entry.type.name() == 'CERTIFICATION'} ? ' text-bg-success' :
-                        (${entry.type.name() == 'EDUCATION'} ? ' text-bg-primary' :
-                        (${entry.type.name() == 'PROJECT'} ? ' text-bg-warning' :
-                        ' text-bg-secondary'))"
-                      th:text="${entry.type}">
-                </span>
-            </td>
+            <a th:href="@{/admin/timeline/add}"
+               class="btn-admin">
 
-            <td th:text="${#temporals.format(entry.date, 'dd/MM/yyyy')}"></td>
+                <i class="bi bi-plus-circle"></i>
+                Ajouter une étape
 
-            <td>
-                <a th:if="${entry.link != null && !entry.link.isBlank()}"
-                   th:href="${entry.link}"
-                   target="_blank"
-                   class="btn btn-outline-info btn-sm">
-                    Voir
-                </a>
+            </a>
 
-                <span th:unless="${entry.link != null && !entry.link.isBlank()}">
-                    —
-                </span>
-            </td>
+        </section>
 
-            <td th:text="${entry.displayOrder}"></td>
 
-            <td>
+        <section class="card-admin table-card">
 
-                <a class="btn btn-primary btn-sm"
-                   th:href="@{'/admin/timeline/edit/' + ${entry.id}}">
-                    Modifier
-                </a>
 
-                <a class="btn btn-danger btn-sm"
-                   th:href="@{'/admin/timeline/delete/' + ${entry.id}}"
-                   onclick="return confirm('Supprimer cette étape ?');">
-                    Supprimer
-                </a>
+            <table class="admin-table">
 
-            </td>
+                <thead>
 
-        </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Lien</th>
+                    <th>Ordre</th>
+                    <th>Actions</th>
+                </tr>
 
-        </tbody>
+                </thead>
 
-    </table>
 
-    <a th:href="@{/admin/dashboard}"
-       class="btn btn-danger">
-        Retour
-    </a>
+                <tbody>
+
+
+                <tr th:each="entry : ${timelineEntries}">
+
+
+                    <td th:text="${entry.id}"></td>
+
+
+                    <td>
+
+                        <strong th:text="${entry.title}"></strong>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="badge-admin"
+                              th:classappend="
+                              ${entry.type.name() == 'CERTIFICATION'} ? ' badge-success' :
+                              (${entry.type.name() == 'EDUCATION'} ? ' badge-primary' :
+                              (${entry.type.name() == 'PROJECT'} ? ' badge-warning' :
+                              ' badge-secondary'))"
+                              th:text="${entry.type}">
+                        </span>
+
+                    </td>
+
+
+                    <td th:text="${#temporals.format(entry.date, 'dd/MM/yyyy')}"></td>
+
+
+                    <td>
+
+                        <a th:if="${entry.link != null && !entry.link.isBlank()}"
+                           th:href="${entry.link}"
+                           target="_blank"
+                           class="btn-link-admin">
+
+                            <i class="bi bi-box-arrow-up-right"></i>
+                            Voir
+
+                        </a>
+
+
+                        <span th:unless="${entry.link != null && !entry.link.isBlank()}">
+                            —
+                        </span>
+
+                    </td>
+
+
+                    <td th:text="${entry.displayOrder}"></td>
+
+
+                    <td class="actions">
+
+
+                        <a class="btn-admin btn-small"
+                           th:href="@{'/admin/timeline/edit/' + ${entry.id}}">
+
+                            <i class="bi bi-pencil"></i>
+                            Modifier
+
+                        </a>
+
+
+                        <a class="btn-danger"
+                           th:href="@{'/admin/timeline/delete/' + ${entry.id}}"
+                           onclick="return confirm('Supprimer cette étape ?');">
+
+                            <i class="bi bi-trash"></i>
+                            Supprimer
+
+                        </a>
+
+
+                    </td>
+
+
+                </tr>
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </section>
+
+
+    </main>
+
 
 </div>
+
 
 </body>
 </html>
