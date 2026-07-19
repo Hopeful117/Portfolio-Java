@@ -1,86 +1,233 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:replace="~{fragments/head :: head('Ajouter une étape du parcours')}"></th:block>
+
+<th:block th:replace="~{fragments/admin-head :: head('Ajouter une étape du parcours')}"></th:block>
+
 
 <body>
 
-<div class="container mt-4">
 
-    <h2 class="mb-4">Ajouter une étape du parcours</h2>
+<div class="admin-layout">
 
-    <form th:action="@{/admin/timeline}"
-          th:object="${timelineEntry}"
-          method="post">
 
-        <div class="mb-3">
-            <label class="form-label">Titre</label>
-            <input type="text"
-                   th:field="*{title}"
-                   class="form-control"
-                   placeholder="Ex : Certification CS50x">
-        </div>
+    <th:block th:replace="~{fragments/admin-sidebar :: sidebar}"></th:block>
 
-        <div class="mb-3">
-            <label class="form-label">Type</label>
-            <select th:field="*{type}"
-                    class="form-select">
 
-                <option value="">-- Sélectionner un type --</option>
 
-                <option th:each="type : ${timelineTypes}"
-                        th:value="${type}"
-                        th:text="${type}">
-                </option>
+    <main class="admin-content">
 
-            </select>
-        </div>
 
-        <div class="mb-3">
-            <label class="form-label">Date</label>
-            <input type="date"
-                   th:field="*{date}"
-                   class="form-control">
-        </div>
+        <th:block th:replace="~{fragments/admin-header :: header('Ajouter une étape du parcours')}"></th:block>
 
-        <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea th:field="*{description}"
-                      rows="5"
-                      class="form-control"
-                      placeholder="Décrivez cette étape de votre parcours...">
-            </textarea>
-        </div>
 
-        <div class="mb-3">
-            <label class="form-label">Lien (optionnel)</label>
-            <input type="url"
-                   th:field="*{link}"
-                   class="form-control"
-                   placeholder="https://...">
-        </div>
 
-        <div class="mb-3">
-            <label class="form-label">Ordre d'affichage</label>
-            <input type="number"
-                   th:field="*{displayOrder}"
-                   class="form-control"
-                   min="1">
-        </div>
 
-        <button type="submit"
-                class="btn btn-primary">
-            Enregistrer
-        </button>
+        <section class="card-admin form-card">
 
-        <a th:href="@{/admin/timeline}"
-           class="btn btn-secondary">
-            Annuler
-        </a>
 
-    </form>
+            <form th:action="@{/admin/timeline}"
+                  th:object="${timelineEntry}"
+                  method="post">
+
+
+
+
+
+                <div class="form-group">
+
+
+                    <label for="title">
+                        Titre
+                    </label>
+
+
+                    <input id="title"
+                           type="text"
+                           th:field="*{title}"
+                           class="input-admin"
+                           placeholder="Ex : Certification CS50x">
+
+
+                </div>
+
+
+
+
+
+
+                <div class="form-group">
+
+
+                    <label for="type">
+                        Type
+                    </label>
+
+
+                    <select id="type"
+                            th:field="*{type}"
+                            class="select-admin">
+
+
+                        <option value="">
+                            -- Sélectionner un type --
+                        </option>
+
+
+                        <option th:each="type : ${timelineTypes}"
+                                th:value="${type}"
+                                th:text="${type}">
+                        </option>
+
+
+                    </select>
+
+
+                </div>
+
+
+
+
+
+
+
+                <div class="form-group">
+
+
+                    <label for="date">
+                        Date
+                    </label>
+
+
+                    <input id="date"
+                           type="date"
+                           th:field="*{date}"
+                           class="input-admin">
+
+
+                </div>
+
+
+
+
+
+
+
+                <div class="form-group">
+
+
+                    <label for="description">
+                        Description
+                    </label>
+
+
+                    <textarea id="description"
+                              th:field="*{description}"
+                              rows="5"
+                              class="textarea-admin"
+                              placeholder="Décrivez cette étape de votre parcours...">
+                    </textarea>
+
+
+                </div>
+
+
+
+
+
+
+
+                <div class="form-group">
+
+
+                    <label for="link">
+                        Lien (optionnel)
+                    </label>
+
+
+                    <input id="link"
+                           type="url"
+                           th:field="*{link}"
+                           class="input-admin"
+                           placeholder="https://...">
+
+
+                </div>
+
+
+
+
+
+
+
+                <div class="form-group">
+
+
+                    <label for="displayOrder">
+                        Ordre d'affichage
+                    </label>
+
+
+                    <input id="displayOrder"
+                           type="number"
+                           th:field="*{displayOrder}"
+                           class="input-admin"
+                           min="1">
+
+
+                </div>
+
+
+
+
+
+
+
+                <div class="form-actions">
+
+
+                    <button type="submit"
+                            class="btn-admin">
+
+                        <i class="bi bi-check-circle"></i>
+
+                        Enregistrer
+
+                    </button>
+
+
+
+
+                    <a th:href="@{/admin/timeline}"
+                       class="btn-secondary-admin">
+
+                        Annuler
+
+                    </a>
+
+
+                </div>
+
+
+
+
+
+            </form>
+
+
+        </section>
+
+
+
+    </main>
+
+
 
 </div>
 
+
+
 </body>
+
 </html>

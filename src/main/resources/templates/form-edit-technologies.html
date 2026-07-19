@@ -1,27 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:replace="~{fragments/head :: head('edit technologies')}"></th:block>
+
+<th:block th:replace="~{fragments/admin-head :: head('Modifier une technologie')}"></th:block>
+
+
 <body>
-<h2 class="h2">Ajouter une technologie</h2>
-<form th:action="@{/admin/technologies/edit/{id}(id=${technology.id})}" th:object="${technology}" method="post">
 
-    <input type="hidden" th:field="*{id}">
-    <div class="mb-3">
-        <label class="form-label">Nom
-            <input type="text" th:field="*{name}" class="form-control" placeholder="${technology.name}">
-        </label>
-    </div>
 
-    <div class="mb-3">
-        <label class="form-label">Icone
-            <input type="url" th:field="*{iconeUrl}" class="form-control" placeholder="${technology.iconeUrl}">
-        </label>
-    </div>
-    <button type="submit" class="btn btn-primary">
-        Enregistrer
-    </button>
-</form>
+<div class="admin-layout">
+
+
+    <th:block th:replace="~{fragments/admin-sidebar :: sidebar}"></th:block>
+
+
+
+    <main class="admin-content">
+
+
+        <th:block th:replace="~{fragments/admin-header :: header('Modifier une technologie')}"></th:block>
+
+
+
+        <section class="card-admin form-card">
+
+
+            <form th:action="@{/admin/technologies/edit/{id}(id=${technology.id})}"
+                  th:object="${technology}"
+                  method="post">
+
+
+
+                <input type="hidden"
+                       th:field="*{id}">
+
+
+
+                <div class="form-group">
+
+
+                    <label for="name">
+                        Nom
+                    </label>
+
+
+                    <input id="name"
+                           type="text"
+                           th:field="*{name}"
+                           class="input-admin">
+
+                </div>
+
+
+
+
+                <div class="form-group">
+
+
+                    <label for="iconeUrl">
+                        Icône URL
+                    </label>
+
+
+                    <input id="iconeUrl"
+                           type="url"
+                           th:field="*{iconeUrl}"
+                           class="input-admin">
+
+
+                </div>
+
+
+
+
+                <div class="form-actions">
+
+
+                    <button type="submit"
+                            class="btn-admin">
+
+                        <i class="bi bi-check-circle"></i>
+
+                        Enregistrer
+
+                    </button>
+
+
+
+                    <a th:href="@{/admin/technologies}"
+                       class="btn-secondary-admin">
+
+                        Annuler
+
+                    </a>
+
+
+                </div>
+
+
+
+            </form>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
 
 </body>
+
 </html>

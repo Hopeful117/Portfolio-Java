@@ -1,76 +1,172 @@
 <!DOCTYPE html>
-<html lang="en">
-<th:block th:replace="~{fragments/head :: head('dashboard projets')}"></th:block>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragments/admin-head :: head('Modifier un projet')}"></th:block>
+
 <body>
-<h2 class="h2">Modifier un projet</h2>
-<form th:action="@{/admin/projects/edit/{id}(id=${project.id})}" th:object="${project}" method="post" enctype="multipart/form-data">
 
-    <input type="hidden" th:field="*{id}">
-    <div class="mb-3">
-        <label class="form-label">Titre</label>
-        <input type="text" class="form-control" th:field="*{title}" placeholder="${project.title}">
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Description</label>
-        <textarea class="form-control"
-                  th:field="*{description}"
-                  placeholder="${project.description}"
-
-        ></textarea>
-    </div>
-
-    <div class="mb-3">
-        <div class="d-flex justify-content-between align-items-center">
-            <label class="form-label mb-0">Technologies</label>
+<div class="admin-layout">
 
 
-            <a th:href="@{/admin/technologies}"
-               class="btn btn-sm btn-outline-primary">
-                + Ajouter une technologie
-            </a>
-        </div>
+    <th:block th:replace="~{fragments/admin-sidebar :: sidebar}"></th:block>
 
-        <div class="mt-2" th:each="technology : ${technologies}">
-            <div class="form-check">
-                <input class="form-check-input"
-                       type="checkbox"
-                       th:field="*{technologyIds}"
-                       th:value="${technology.id}">
 
-                <label class="form-check-label"
-                       th:text="${technology.name}">
-                    Java
-                </label>
-            </div>
-        </div>
-    </div>
+    <main class="admin-content">
 
-    <div class="mb-3">
-        <label class="form-label">Image URL</label>
-        <input type="file"
-               class="form-control"
-               name="image"
-               th:field="*{image}
-                "
-placeholder="${project.imagePath}">
-    </div>
 
-    <div class="mb-3">
-        <label class="form-label">GitHub URL</label>
-        <input type="text"
-               class="form-control"
-               th:field="*{githubUrl}"
-        placeholder="${project.githubUrl}">
-    </div>
+        <th:block th:replace="~{fragments/admin-header :: header('Modifier un projet')}"></th:block>
 
-    <button type="submit" class="btn btn-primary">
-        Enregistrer
-    </button>
+
+        <section class="card-admin form-card">
+
+
+            <form th:action="@{/admin/projects/edit/{id}(id=${project.id})}"
+                  th:object="${project}"
+                  method="post"
+                  enctype="multipart/form-data">
+
+
+                <input type="hidden" th:field="*{id}">
+
+
+                <div class="form-group">
+
+                    <label>Titre</label>
+
+                    <input type="text"
+                           class="input-admin"
+                           th:field="*{title}">
+
+                </div>
 
 
 
-</form>
+                <div class="form-group">
+
+                    <label>Description</label>
+
+                    <textarea class="textarea-admin"
+                              rows="5"
+                              th:field="*{description}">
+                    </textarea>
+
+                </div>
+
+
+
+                <div class="form-group">
+
+
+                    <div class="form-header">
+
+                        <label>Technologies</label>
+
+
+                        <a th:href="@{/admin/technologies}"
+                           class="btn-secondary-admin">
+
+                            <i class="bi bi-plus-circle"></i>
+                            Ajouter
+
+                        </a>
+
+                    </div>
+
+
+
+                    <div class="checkbox-list">
+
+
+                        <div th:each="technology : ${technologies}"
+                             class="checkbox-item">
+
+
+                            <input class="checkbox-admin"
+                                   type="checkbox"
+                                   th:field="*{technologyIds}"
+                                   th:value="${technology.id}">
+
+
+                            <label th:text="${technology.name}">
+                                Java
+                            </label>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+                <div class="form-group">
+
+                    <label>Image</label>
+
+
+                    <input type="file"
+                           class="input-admin"
+                           name="image"
+                           th:field="*{image}">
+
+
+                </div>
+
+
+
+
+                <div class="form-group">
+
+                    <label>GitHub URL</label>
+
+
+                    <input type="text"
+                           class="input-admin"
+                           th:field="*{githubUrl}">
+
+                </div>
+
+
+
+
+                <div class="form-actions">
+
+
+                    <button type="submit"
+                            class="btn-admin">
+
+                        <i class="bi bi-check-circle"></i>
+                        Enregistrer
+
+                    </button>
+
+
+                    <a th:href="@{/admin/projects}"
+                       class="btn-secondary-admin">
+
+                        Annuler
+
+                    </a>
+
+
+                </div>
+
+
+            </form>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
 
 </body>
 </html>
