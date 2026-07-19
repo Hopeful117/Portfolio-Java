@@ -17,6 +17,6 @@ public class SkillController {
         log.info("Accès page skills");
         model.addAttribute("title","Skills");
         model.addAttribute("skillCategories",skillService.getSkillsGroupedByCategory());
-        return "skills";
+        return "public/skills";
     }
 }

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<th:block th:replace="~{fragments/head :: head('Parcours')}"></th:block>
+
+
+<body>
+
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+
+
+<main class="page-container">
+
+
+    <section class="section">
+
+
+        <h1 class="section-title">
+            Mon parcours
+        </h1>
+
+
+
+        <div class="timeline">
+
+
+            <div th:each="entry : ${timelineEntries}"
+                 class="timeline-item">
+
+
+
+                <div class="timeline-marker"></div>
+
+
+
+                <div class="timeline-content">
+
+
+                    <div class="timeline-header">
+
+
+                        <h3 th:text="${entry.title}">
+                            Certification
+                        </h3>
+
+
+
+                        <span class="timeline-badge"
+                              th:text="${entry.type}">
+                        Formation
+                    </span>
+
+
+                    </div>
+
+
+
+
+                    <p class="timeline-date"
+                       th:text="${#temporals.format(entry.date,'MM/yyyy')}">
+                    </p>
+
+
+
+
+
+                    <p th:text="${entry.description}">
+                    </p>
+
+
+
+
+
+                    <a th:if="${entry.link != null && !entry.link.isBlank()}"
+                       th:href="${entry.link}"
+                       target="_blank"
+                       class="btn-main">
+
+                        Voir le certificat
+
+                    </a>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+</main>
+
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>

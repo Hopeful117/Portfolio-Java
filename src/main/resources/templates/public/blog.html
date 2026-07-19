@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+
+<th:block th:replace="~{fragments/head :: head('DevBlog')}"></th:block>
+
+
+<body>
+
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+
+
+<main class="container py-5">
+
+
+
+    <header class="page-header">
+
+        <h1>
+            DevBlog
+        </h1>
+
+
+        <p>
+            Retour d'expérience sur mes projets,
+            mon apprentissage et mon évolution de développeur.
+        </p>
+
+
+    </header>
+
+
+
+
+
+    <section class="articles-grid">
+
+
+
+        <article class="article-card"
+                 th:each="article : ${articles}">
+
+
+
+
+
+            <div class="article-cover"
+                 th:if="${article.coverImage != null}">
+
+                <img th:src="${article.coverImage}"
+                     th:alt="${article.title}">
+
+            </div>
+
+
+
+
+
+
+            <div class="article-content">
+
+
+
+                <div class="article-date">
+
+                    <i class="bi bi-calendar"></i>
+
+                    <span th:text="${#temporals.format(article.createdAt,'dd/MM/yyyy')}">
+                        01/01/2026
+                    </span>
+
+                </div>
+
+
+
+
+
+                <h2 th:text="${article.title}">
+                    Titre de l'article
+                </h2>
+
+
+
+
+
+                <p th:text="${article.excerpt}">
+                    Résumé de l'article
+                </p>
+
+
+
+
+
+                <div class="article-tags">
+
+
+                    <span class="article-tag"
+                          th:each="tag : ${article.tags}"
+                          th:text="${tag}">
+
+                        Java
+
+                    </span>
+
+
+                </div>
+
+
+
+
+
+                <a th:href="@{'/blog/' + ${article.slug}}"
+                   class="btn-primary-custom">
+
+
+                    Lire l'article
+
+
+                </a>
+
+
+
+            </div>
+
+
+
+
+        </article>
+
+
+
+    </section>
+
+
+
+</main>
+
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+
+</html>

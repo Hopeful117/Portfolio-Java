@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+
+<th:block th:replace="~{fragments/head :: head('Compétences')}"></th:block>
+
+
+<body>
+
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+
+
+<main class="container py-5">
+
+
+
+    <header class="page-header">
+
+
+        <h1>
+            Compétences
+        </h1>
+
+
+        <p>
+            Technologies et outils utilisés dans mes projets
+            de développement logiciel.
+        </p>
+
+
+    </header>
+
+
+
+
+
+    <section class="skills-container">
+
+
+        <div class="skill-category"
+             th:each="group : ${skillCategories}">
+
+
+
+            <div class="skill-category-header">
+
+
+                <h2 th:text="${group.category()}">
+                    Backend
+                </h2>
+
+
+            </div>
+
+
+
+
+
+            <div class="skills-grid">
+
+
+                <article class="skill-card"
+                         th:each="skill : ${group.skills()}">
+
+
+
+                    <h3 th:text="${skill.name}">
+                        Java
+                    </h3>
+
+
+
+
+                    <span class="skill-badge"
+                          th:text="${skill.skillLevel}"
+                          th:classappend="${
+                            skill.skillLevel.name() == 'DEBUTANT'} ? ' skill-beginner' :
+                            (${skill.skillLevel.name() == 'INTERMEDIAIRE'} ? ' skill-intermediate' :
+                            (${skill.skillLevel.name() == 'CONFIRME'} ? ' skill-confirmed' :
+                            ' skill-expert'))">
+
+                    </span>
+
+
+
+                </article>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+</main>
+
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+
+</html>

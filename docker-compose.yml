@@ -26,7 +26,20 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./db/init:/docker-entrypoint-initdb.d
-      
+
+
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - portfolio-network
+
+
+    restart: unless-stopped
+
+
 
   portfolio:
     build: .
@@ -44,6 +57,7 @@ services:
       DB_URL: ${DB_URL}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
+      MONGO_URI: ${MONGO_URI}
 
     networks:
       - portfolio-network
@@ -57,6 +71,7 @@ services:
 volumes:
   postgres_data:
   uploads:
+  mongo_data:
 
 
 networks:

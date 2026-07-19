@@ -1,59 +1,75 @@
 <nav th:fragment="navbar"
-     class="navbar navbar-expand-lg navbar-dark bg-dark" xmlns:th="http://www.w3.org/1999/xhtml">
+     class="main-navbar"
+     xmlns:th="http://www.w3.org/1999/xhtml">
 
-    <div class="container">
 
-        <a class="navbar-brand" th:href="@{/}">
-            Ludovic Brot
-        </a>
+    <div class="navbar-container">
 
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarNav">
+        
 
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="collapse navbar-collapse"
+
+
+        <div class="navbar-menu"
              id="navbarNav">
 
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-links">
 
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">
+
+                <li>
+                    <a th:href="@{/}">
                         Accueil
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/projects}">
+
+
+                <li>
+                    <a th:href="@{/projects}">
                         Projets
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/skills}">
+
+
+                <li>
+                    <a th:href="@{/skills}">
                         Compétences
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/journey}">
+
+
+                <li>
+                    <a th:href="@{/journey}">
                         Parcours
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/contact}">
+
+
+                <li>
+                    <a th:href="@{/blog}">
+                        DevBlog
+                    </a>
+                </li>
+
+
+
+                <li>
+                    <a th:href="@{/contact}">
                         Contact
                     </a>
                 </li>
 
+
             </ul>
+
 
         </div>
 
+
     </div>
+
 
 </nav>

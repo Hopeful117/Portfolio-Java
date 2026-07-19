@@ -12,6 +12,6 @@ public class LoginController {
     public String getLoginPage(Model model){
         log.info("Accès a la page login");
         model.addAttribute("title","Login");
-        return "login";
+        return "admin/login";
     }
 }

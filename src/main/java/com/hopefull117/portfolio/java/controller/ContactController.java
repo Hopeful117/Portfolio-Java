@@ -12,6 +12,6 @@ public class ContactController {
     public String contact(Model model) {
         log.info("Accès page contact");
         model.addAttribute("title","Contact");
-        return "contact";
+        return "public/contact";
     }
 }

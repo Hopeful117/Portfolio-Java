@@ -17,6 +17,6 @@ public class JourneyController {
         log.info("Accès page journey");
         model.addAttribute("title","Journey");
         model.addAttribute("timelineEntries",timelineEntryService.getTimeline());
-        return "journey";
+        return "public/journey";
     }
 }

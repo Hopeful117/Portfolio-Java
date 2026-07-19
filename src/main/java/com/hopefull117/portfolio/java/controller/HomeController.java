@@ -21,6 +21,6 @@ public class HomeController {
             model.addAttribute("title", "Portfolio");
             model.addAttribute("projects",projectService.getLastThreeProject());
             model.addAttribute("technologies",technologieService.getAll().stream().limit(5));
-            return "home";
+            return "public/home";
         }
 }

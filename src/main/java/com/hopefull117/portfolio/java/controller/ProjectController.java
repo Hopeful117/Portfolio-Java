@@ -18,6 +18,6 @@ public class ProjectController {
         model.addAttribute("title","Projets");
         model.addAttribute("projects",projectService.getAll());
 
-        return "projects";
+        return "public/projects";
     }
 }

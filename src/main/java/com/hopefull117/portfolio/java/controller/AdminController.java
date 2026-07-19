@@ -6,15 +6,9 @@ import com.hopefull117.portfolio.java.helper.Category;
 import com.hopefull117.portfolio.java.helper.SkillLevel;
 import com.hopefull117.portfolio.java.helper.TimelineType;
 import com.hopefull117.portfolio.java.mapper.ProjectMapper;
-import com.hopefull117.portfolio.java.model.Project;
+import com.hopefull117.portfolio.java.model.*;
 
-import com.hopefull117.portfolio.java.model.Skill;
-import com.hopefull117.portfolio.java.model.Technology;
-import com.hopefull117.portfolio.java.model.TimelineEntry;
-import com.hopefull117.portfolio.java.service.ProjectService;
-import com.hopefull117.portfolio.java.service.SkillService;
-import com.hopefull117.portfolio.java.service.TechnologieService;
-import com.hopefull117.portfolio.java.service.TimelineEntryService;
+import com.hopefull117.portfolio.java.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin")
@@ -35,19 +31,20 @@ public class AdminController {
     private final ProjectMapper projectMapper;
     private final SkillService skillService;
     private final TimelineEntryService timelineEntryService;
+    private final ArticleService articleService;
 
 
     @GetMapping("/dashboard")
     public String getDashBoard(Model model){
         log.info("Tentative d'accès au panneau administrateur");
         model.addAttribute("title","Dashboard");
-        return "dashboard";
+        return "admin/dashboard";
     }
     @GetMapping("/projects")
     public String getProjectDashboard(Model model){
         log.info("Tentative d'accès au panneau des projets");
         model.addAttribute("projects",projectService.getAll());
-        return "dashboard-projects";
+        return "admin/projects/dashboard-projects";
     }
 
 
@@ -56,7 +53,7 @@ public class AdminController {
         log.info("Tentative d'accès au panneau d'ajouts de projets");
         model.addAttribute("projects",new ProjectsDTO());
         model.addAttribute("technologies",technologieService.getAll());
-        return "form-projects";
+        return "admin/projects/form-projects";
     }
 
     @PostMapping("/projects")
@@ -72,7 +69,7 @@ public class AdminController {
         Project project= projectService.findById(id);
         model.addAttribute("project",projectMapper.toEditDto(project));
         model.addAttribute("technologies",technologieService.getAll());
-        return "form-edit-projects";
+        return "admin/projects/form-edit-projects";
 
 
     }
@@ -96,14 +93,14 @@ public class AdminController {
     public String getTechnologiesDashboard(Model model){
         log.info("Tentative d'accès au panneau de gestion des technologies");
         model.addAttribute("technologies",technologieService.getAll());
-        return "dashboard-technologies";
+        return "admin/technologies/dashboard-technologies";
 
     }
     @GetMapping("/technologies/add")
     public String getAddTechnologiesForm(Model model){
         log.info("Tentative d'accès au panneau d'ajout de technologies");
         model.addAttribute("technologies",new Technology());
-        return "form-technologies";
+        return "admin/technologies/form-technologies";
     }
     @PostMapping("/technologies")
     public String createTechnologies(@Valid Technology technology){
@@ -115,7 +112,7 @@ public class AdminController {
     public String getEditTechnologieForm(Model model, @Valid Technology technology ,@PathVariable("id")Long id){
         log.info("Tentative d'accès au formulaire de modification de la technologie {}",id);
         model.addAttribute("technology",technologieService.findById(id));
-        return("form-edit-technologies");
+        return("admin/technologies/form-edit-technologies");
 
     }
 
@@ -137,7 +134,7 @@ public class AdminController {
     public String getSkillDashboard(Model model){
         log.info("Tentative d'accès au panneau de gestion des compétences");
         model.addAttribute("skills",skillService.getAll());
-        return "dashboard-skills";
+        return "admin/skills/dashboard-skills";
 
     }
 
@@ -149,7 +146,7 @@ public class AdminController {
         model.addAttribute("categories", Category.values());
         model.addAttribute("levels", SkillLevel.values());
 
-        return "form-skills";
+        return "admin/skills/form-skills";
 
     }
 
@@ -166,7 +163,7 @@ public class AdminController {
         model.addAttribute("skill",skillService.findById(id));
         model.addAttribute("categories", Category.values());
         model.addAttribute("levels", SkillLevel.values());
-        return "form-edit-skills.html";
+        return "admin/skills/form-edit-skills.html";
 
     }
 
@@ -189,7 +186,7 @@ public class AdminController {
     public String getTimelineDashboard(Model model){
         log.info("tentative d'accès au panneau de gestion de la timeline" );
         model.addAttribute("timelineEntries",timelineEntryService.getTimeline());
-        return "dashboard-timeline";
+        return "admin/timeline/dashboard-timeline";
 
     }
 
@@ -198,7 +195,7 @@ public class AdminController {
         log.info("tentative d'accès au formulaire de création de timeline");
         model.addAttribute("timelineEntry", new TimelineEntry());
         model.addAttribute("timelineTypes", TimelineType.values());
-        return "form-timeline";
+        return "admin/timeline/form-timeline";
     }
     @PostMapping("/timeline")
     public String createTimeline(@Valid TimelineEntry timelineEntry){
@@ -211,7 +208,7 @@ public class AdminController {
         log.info("tentative d'accès au formulaire de la timeline{}", id);
         model.addAttribute("timelineEntry",timelineEntryService.findById(id));
         model.addAttribute("timelineTypes",TimelineType.values());
-        return "form-edit-timeline";
+        return "admin/timeline/form-edit-timeline";
 
     }
     @PostMapping("/timeline/edit/{id}")
@@ -227,6 +224,89 @@ public class AdminController {
         timelineEntryService.deleteById(id);
         return "redirect:/admin/timeline";
     }
+
+    @GetMapping("/articles")
+    public String getArticleDashboard(Model model){
+
+        log.info("Tentative d'accès au panneau de gestion des articles");
+
+        model.addAttribute(
+                "articles",
+                articleService.getAll()
+        );
+
+        return "admin/articles/dashboard-articles";
+    }
+
+    @GetMapping("/articles/add")
+    public String getAddArticleForm(Model model){
+
+        log.info("Tentative d'accès au formulaire d'ajout d'article");
+
+        model.addAttribute(
+                "article",
+                new Article()
+        );
+
+        return "admin/articles/form-articles";
+
+    }
+    @PostMapping("/articles")
+    public String createArticle(@Valid Article article,@RequestParam("image") MultipartFile image) throws IOException {
+
+        log.info("Tentative de création d'un article");
+
+        article.setCreatedAt(Instant.now());
+
+        articleService.create(article,image);
+
+        return "redirect:/admin/articles";
+
+    }
+
+    @GetMapping("/articles/edit/{id}")
+    public String getEditArticleForm(Model model,
+                                     @PathVariable String id){
+
+        log.info("Modification article {}", id);
+
+
+        model.addAttribute(
+                "article",
+                articleService.findById(id)
+        );
+
+
+        return "admin/articles/form-edit-articles";
+
+    }
+    @PostMapping("/articles/edit/{id}")
+    public String editArticle(@Valid Article article,
+                              @PathVariable String id,
+                              @RequestParam("image") MultipartFile image) throws IOException {
+
+
+
+
+        articleService.update(id, article,image);
+
+
+        return "redirect:/admin/articles";
+
+    }
+    @GetMapping("/articles/delete/{id}")
+    public String deleteArticle(@PathVariable String id){
+
+        log.info("Suppression article {}", id);
+
+
+        articleService.deleteById(id);
+
+
+        return "redirect:/admin/articles";
+
+    }
+
 
 
 }
