@@ -1,5 +1,6 @@
 package com.hopefull117.portfolio.java.service;
 
+import com.hopefull117.portfolio.java.dto.ArticleViewDto;
 import com.hopefull117.portfolio.java.exception.EntityNotFoundException;
 import com.hopefull117.portfolio.java.model.Article;
 import com.hopefull117.portfolio.java.repository.ArticleRepository;
@@ -18,6 +19,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final FileStorageService fileStorageService;
+    private final MarkdownService markdownService;
 
 
 
@@ -71,7 +73,7 @@ public class ArticleService {
         existingArticle.setExcerpt(article.getExcerpt());
 
         existingArticle.setContent(article.getContent());
-        
+
 
         existingArticle.setTags(article.getTags());
 
@@ -111,15 +113,24 @@ public class ArticleService {
 
 
 
-    public Article findBySlug(String slug){
+    public ArticleViewDto findBySlug(String slug){
 
-        return articleRepository.findBySlug(slug)
+        Article article = articleRepository.findBySlug(slug)
                 .orElseThrow(
                         () -> new EntityNotFoundException(
                                 "Article non trouvé"
                         )
                 );
 
+        return ArticleViewDto.builder()
+                .title(article.getTitle())
+                .slug(article.getSlug())
+                .excerpt(article.getExcerpt())
+                .content(markdownService.toHtml(article.getContent()))
+                .coverImage(article.getCoverImage())
+                .tags(article.getTags())
+                .createdAt(article.getCreatedAt())
+                .build();
     }
 
 }

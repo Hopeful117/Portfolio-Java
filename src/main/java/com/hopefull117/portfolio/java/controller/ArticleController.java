@@ -1,5 +1,6 @@
 package com.hopefull117.portfolio.java.controller;
 
+import com.hopefull117.portfolio.java.dto.ArticleViewDto;
 import com.hopefull117.portfolio.java.model.Article;
 import com.hopefull117.portfolio.java.service.ArticleService;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class ArticleController {
                           Model model){
 
 
-        Article article = articleService.findBySlug(slug);
+        ArticleViewDto article = articleService.findBySlug(slug);
 
 
         model.addAttribute("article", article);
