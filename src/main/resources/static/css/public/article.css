@@ -10,12 +10,7 @@
 }
 
 
-.article-cover {
 
-
-    aspect-ratio: 16 / 9;
-
-}
 
 
 .article-cover img {
@@ -115,7 +110,7 @@
 
 .article-cover-large {
 
-    aspect-ratio: 16 / 9;
+
     margin-bottom: 2rem;
 
 }
