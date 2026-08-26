@@ -1,1 +1,5 @@
+com/hopefull117/portfolio/java/controller/AdminArticleControllerTest.class
+com/hopefull117/portfolio/java/service/ArticleServiceTest.class
+com/hopefull117/portfolio/java/controller/ArticleControllerTest.class
 com/hopefull117/portfolio/java/JavaApplicationTests.class
+com/hopefull117/portfolio/java/service/SlugGeneratorTest.class

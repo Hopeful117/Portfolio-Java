@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragments/admin-head :: head('Gestion technologies')}"></th:block>
+
+<body>
+
+<div class="admin-layout">
+
+
+    <th:block th:replace="~{fragments/admin-sidebar :: sidebar}"></th:block>
+
+
+    <main class="admin-content">
+
+
+        <th:block th:replace="~{fragments/admin-header :: header('Technologies')}"></th:block>
+
+
+        <section class="page-actions">
+
+            <a th:href="@{/admin/technologies/add}"
+               class="btn-admin">
+
+                <i class="bi bi-plus-circle"></i>
+                Ajouter une technologie
+
+            </a>
+
+        </section>
+
+
+        <section class="card-admin table-card">
+
+
+            <table class="admin-table">
+
+                <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Icône</th>
+                    <th>Actions</th>
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                <tr th:each="tech : ${technologies}">
+
+
+                    <td th:text="${tech.id}"></td>
+
+
+                    <td>
+
+                        <strong th:text="${tech.name}"></strong>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="technology-icon">
+
+                            <img th:src="${tech.iconeUrl}"
+                                 th:alt="${tech.name}">
+
+                        </div>
+
+                    </td>
+
+
+                    <td class="actions">
+
+
+                        <a class="btn-admin btn-small"
+                           th:href="@{'/admin/technologies/edit/' + ${tech.id}}">
+
+                            <i class="bi bi-pencil"></i>
+                            Modifier
+
+                        </a>
+
+
+                        <a class="btn-danger"
+                           th:href="@{'/admin/technologies/delete/' + ${tech.id}}"
+                           onclick="return confirm('Supprimer cette technologie ?');">
+
+                            <i class="bi bi-trash"></i>
+                            Supprimer
+
+                        </a>
+
+
+                    </td>
+
+
+                </tr>
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+</html>

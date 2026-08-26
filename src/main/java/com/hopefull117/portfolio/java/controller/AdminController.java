@@ -2,6 +2,8 @@ package com.hopefull117.portfolio.java.controller;
 
 import com.hopefull117.portfolio.java.dto.ProjectEditDTO;
 import com.hopefull117.portfolio.java.dto.ProjectsDTO;
+import com.hopefull117.portfolio.java.exception.ArticlePersistenceException;
+import com.hopefull117.portfolio.java.exception.ArticleSlugConflictException;
 import com.hopefull117.portfolio.java.helper.Category;
 import com.hopefull117.portfolio.java.helper.SkillLevel;
 import com.hopefull117.portfolio.java.helper.TimelineType;
@@ -14,11 +16,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.UUID;
 
 @Controller
@@ -252,13 +254,25 @@ public class AdminController {
 
     }
     @PostMapping("/articles")
-    public String createArticle(@Valid Article article,@RequestParam("image") MultipartFile image) throws IOException {
+    public String createArticle(@Valid Article article,
+                                BindingResult bindingResult,
+                                @RequestParam("image") MultipartFile image) throws IOException {
 
         log.info("Tentative de création d'un article");
 
-        article.setCreatedAt(Instant.now());
+        if (bindingResult.hasErrors()) {
+            return "admin/articles/form-articles";
+        }
 
-        articleService.create(article,image);
+        try {
+            articleService.create(article,image);
+        } catch (IllegalArgumentException exception) {
+            bindingResult.rejectValue("title", "article.title.slug", exception.getMessage());
+            return "admin/articles/form-articles";
+        } catch (ArticleSlugConflictException | ArticlePersistenceException exception) {
+            bindingResult.reject("article.save", exception.getMessage());
+            return "admin/articles/form-articles";
+        }
 
         return "redirect:/admin/articles";
 
@@ -282,13 +296,20 @@ public class AdminController {
     }
     @PostMapping("/articles/edit/{id}")
     public String editArticle(@Valid Article article,
+                              BindingResult bindingResult,
                               @PathVariable String id,
                               @RequestParam("image") MultipartFile image) throws IOException {
 
+        if (bindingResult.hasErrors()) {
+            return "admin/articles/form-edit-articles";
+        }
 
-
-
-        articleService.update(id, article,image);
+        try {
+            articleService.update(id, article,image);
+        } catch (ArticlePersistenceException exception) {
+            bindingResult.reject("article.save", exception.getMessage());
+            return "admin/articles/form-edit-articles";
+        }
 
 
         return "redirect:/admin/articles";

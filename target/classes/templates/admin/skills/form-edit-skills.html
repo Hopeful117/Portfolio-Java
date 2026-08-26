@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+<th:block th:replace="~{fragments/admin-head :: head('Modifier une compétence')}"></th:block>
+
+
+<body>
+
+
+<div class="admin-layout">
+
+
+    <th:block th:replace="~{fragments/admin-sidebar :: sidebar}"></th:block>
+
+
+
+    <main class="admin-content">
+
+
+        <th:block th:replace="~{fragments/admin-header :: header('Modifier une compétence')}"></th:block>
+
+
+
+        <section class="card-admin form-card">
+
+
+            <form th:action="@{/admin/skills/edit/{id}(id=${skill.id})}"
+                  th:object="${skill}"
+                  method="post">
+
+
+
+                <div class="form-group">
+
+
+                    <label for="name">
+                        Nom
+                    </label>
+
+
+                    <input
+                            id="name"
+                            type="text"
+                            th:field="*{name}"
+                            class="input-admin">
+
+                </div>
+
+
+
+
+                <div class="form-group">
+
+
+                    <label for="category">
+                        Catégorie
+                    </label>
+
+
+                    <select
+                            id="category"
+                            th:field="*{category}"
+                            class="select-admin">
+
+
+                        <option value="">
+                            -- Sélectionner une catégorie --
+                        </option>
+
+
+                        <option
+                                th:each="category : ${categories}"
+                                th:value="${category}"
+                                th:text="${category}">
+                        </option>
+
+
+                    </select>
+
+
+                </div>
+
+
+
+
+
+                <div class="form-group">
+
+
+                    <label for="skillLevel">
+                        Niveau
+                    </label>
+
+
+                    <select
+                            id="skillLevel"
+                            th:field="*{skillLevel}"
+                            class="select-admin">
+
+
+                        <option value="">
+                            -- Sélectionner un niveau --
+                        </option>
+
+
+                        <option
+                                th:each="level : ${levels}"
+                                th:value="${level}"
+                                th:text="${level}">
+                        </option>
+
+
+                    </select>
+
+
+                </div>
+
+
+
+
+                <div class="form-actions">
+
+
+                    <button type="submit"
+                            class="btn-admin">
+
+                        <i class="bi bi-check-circle"></i>
+
+                        Enregistrer
+
+                    </button>
+
+
+
+                    <a th:href="@{/admin/skills}"
+                       class="btn-secondary-admin">
+
+                        Annuler
+
+                    </a>
+
+
+                </div>
+
+
+
+            </form>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

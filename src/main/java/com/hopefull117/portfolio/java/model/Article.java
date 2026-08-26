@@ -1,13 +1,13 @@
 package com.hopefull117.portfolio.java.model;
 
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 @Document(collection = "articles")
 @Getter
@@ -20,6 +20,7 @@ public class Article implements ModelEntity{
     private String id;
 
 
+    @NotBlank(message = "Le titre est obligatoire")
     private String title;
 
 

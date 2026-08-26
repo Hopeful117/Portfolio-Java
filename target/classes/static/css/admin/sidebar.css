@@ -1,0 +1,91 @@
+/* ==========================================================
+   SIDEBAR
+   ========================================================== */
+
+.admin-sidebar {
+
+    width: 270px;
+    background: rgba(30, 41, 59, .95);
+
+    border-right: 1px solid rgba(255,255,255,.08);
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 2rem 1.5rem;
+
+    backdrop-filter: blur(14px);
+
+}
+
+.sidebar-brand {
+
+    margin-bottom: 3rem;
+
+}
+
+.sidebar-brand h2 {
+
+    font-size: 1.5rem;
+    font-weight: 700;
+
+}
+
+.sidebar-brand span {
+
+    color: var(--text-muted);
+
+}
+.sidebar-nav {
+
+    display: flex;
+    flex-direction: column;
+
+    gap: .75rem;
+
+}
+
+.sidebar-nav a {
+
+    display: flex;
+    align-items: center;
+
+    gap: .75rem;
+
+    padding: .9rem 1rem;
+
+    color: var(--text-secondary);
+
+    text-decoration: none;
+
+    border-radius: 12px;
+
+    transition: .25s;
+
+}
+
+.sidebar-nav a:hover {
+
+    background: rgba(59,130,246,.15);
+
+    color: white;
+
+}
+
+.sidebar-nav i {
+
+    font-size: 1.1rem;
+
+    width: 24px;
+
+}
+
+.sidebar-footer {
+
+    margin-top: auto;
+
+    padding-top: 2rem;
+
+    border-top: 1px solid rgba(255,255,255,.08);
+
+}

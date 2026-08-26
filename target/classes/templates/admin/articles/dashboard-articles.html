@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<th:block th:replace="~{fragments/admin-head :: head('Gestion articles')}"></th:block>
+
+<body>
+
+
+<div class="admin-layout">
+
+
+    <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+
+
+
+
+    <main class="admin-content">
+
+
+
+        <div class="admin-header">
+
+
+            <h1>
+                Gestion des articles
+            </h1>
+
+
+            <p>
+                Gérer les articles du DevBlog
+            </p>
+
+
+        </div>
+
+
+
+
+
+        <div class="page-actions">
+
+
+            <a th:href="@{/admin/articles/add}"
+               class="btn-admin">
+
+                + Ajouter un article
+
+            </a>
+
+
+        </div>
+
+
+
+
+
+
+
+        <div class="card-admin table-card">
+
+
+
+            <table class="admin-table">
+
+
+                <thead>
+
+                <tr>
+
+                    <th>
+                        Titre
+                    </th>
+
+
+                    <th>
+                        Slug
+                    </th>
+
+
+                    <th>
+                        Tags
+                    </th>
+
+
+                    <th>
+                        Statut
+                    </th>
+
+
+                    <th>
+                        Date
+                    </th>
+
+
+                    <th>
+                        Actions
+                    </th>
+
+
+                </tr>
+
+                </thead>
+
+
+
+
+
+
+                <tbody>
+
+
+                <tr th:each="article : ${articles}">
+
+
+
+                    <td th:text="${article.title}">
+                        Article
+                    </td>
+
+
+
+
+
+                    <td th:text="${article.slug}">
+                        slug
+                    </td>
+
+
+
+
+
+
+                    <td>
+
+
+                        <span th:each="tag : ${article.tags}"
+                              class="badge-admin"
+                              th:text="${tag}">
+
+                            Java
+
+                        </span>
+
+
+                    </td>
+
+
+
+
+
+
+
+                    <td>
+
+
+                        <span th:if="${article.published}"
+                              class="badge-success badge-admin">
+
+                            Publié
+
+                        </span>
+
+
+
+                        <span th:unless="${article.published}"
+                              class="badge-warning badge-admin">
+
+                            Brouillon
+
+                        </span>
+
+
+
+                    </td>
+
+
+
+
+
+
+
+                    <td>
+
+
+                        <span th:text="${#temporals.format(article.createdAt,'dd/MM/yyyy')}">
+
+                            01/01/2026
+
+                        </span>
+
+
+                    </td>
+
+
+
+
+
+
+
+
+                    <td>
+
+
+
+                        <a th:href="@{'/admin/articles/edit/' + ${article.id}}"
+                           class="btn-link-admin">
+
+
+                            Modifier
+
+
+                        </a>
+
+
+
+
+
+                        <a th:href="@{'/admin/articles/delete/' + ${article.id}}"
+                           class="btn-danger"
+                           onclick="return confirm('Supprimer cet article ?');">
+
+
+                            Supprimer
+
+
+                        </a>
+
+
+
+                    </td>
+
+
+
+                </tr>
+
+
+
+
+                </tbody>
+
+
+
+            </table>
+
+
+
+        </div>
+
+
+
+
+
+
+    </main>
+
+
+
+</div>
+
+
+</body>
+
+</html>

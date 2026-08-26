@@ -1,0 +1,106 @@
+/* ==========================================
+   DEVBLOG
+   ========================================== */
+
+
+.articles-grid {
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+    gap:2rem;
+
+}
+
+
+
+.article-card {
+
+    background:rgba(30,41,59,.85);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    transition:.3s ease;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+
+}
+
+
+
+.article-card:hover {
+
+    transform:translateY(-7px);
+
+    border-color:rgba(59,130,246,.4);
+
+}
+
+
+
+
+
+.article-content {
+
+    padding:2rem;
+
+}
+
+
+
+
+
+.article-date {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:.5rem;
+
+    color:var(--text-muted);
+
+    font-size:.9rem;
+
+    margin-bottom:1rem;
+
+}
+
+
+
+
+
+.article-content h2 {
+
+    font-size:1.4rem;
+
+    margin-bottom:1rem;
+
+}
+
+
+
+
+
+.article-content p {
+
+    color:var(--text-secondary);
+
+    line-height:1.7;
+
+    display:-webkit-box;
+
+    -webkit-line-clamp:4;
+
+    -webkit-box-orient:vertical;
+
+    overflow:hidden;
+
+    margin-bottom:1.5rem;
+
+}
