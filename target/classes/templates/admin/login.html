@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<th:block th:replace="~{fragments/admin-head :: head('Connexion')}"></th:block>
+
+
+<body class="admin-login-page">
+
+
+<main class="login-container">
+
+
+    <section class="login-card">
+
+
+        <h1>
+            Administration
+        </h1>
+
+
+        <p class="login-subtitle">
+            Connectez-vous à votre espace gestion
+        </p>
+
+
+
+
+        <form th:action="@{/login}"
+              method="post">
+
+
+
+            <div class="admin-form-group">
+
+                <label>
+                    Utilisateur
+                </label>
+
+
+                <input type="text"
+                       name="username"
+                       class="admin-input"
+                       placeholder="Votre identifiant">
+
+            </div>
+
+
+
+
+            <div class="admin-form-group">
+
+                <label>
+                    Mot de passe
+                </label>
+
+
+                <input type="password"
+                       name="password"
+                       class="admin-input"
+                       placeholder="Votre mot de passe">
+
+            </div>
+
+
+
+
+
+            <button type="submit"
+                    class="btn-admin-primary">
+
+                Se connecter
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </section>
+
+
+</main>
+
+
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragments/head :: head('Projets')}"></th:block>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+
+<main class="container my-5">
+
+
+    <header class="page-header">
+
+        <h1>
+            Mes projets
+        </h1>
+
+        <p>
+            Découvrez les projets réalisés autour du développement logiciel,
+            du backend Java, du cloud et de la sécurité.
+        </p>
+
+    </header>
+
+
+
+    <section class="projects-grid">
+
+
+        <article class="project-card"
+                 th:each="project : ${projects}">
+
+
+            <div class="project-image">
+
+                <img th:src="${project.imagePath}"
+                     th:alt="${project.title}">
+
+            </div>
+
+
+
+            <div class="project-content">
+
+
+                <h2 th:text="${project.title}">
+                    Nom du projet
+                </h2>
+
+
+
+                <p th:text="${project.description}">
+                    Description du projet
+                </p>
+
+
+
+                <div class="project-technologies">
+
+
+                    <span class="technology-badge"
+                          th:each="tech : ${project.technologies}">
+
+
+                        <img th:src="${tech.iconeUrl}"
+                             th:alt="${tech.name}">
+
+
+                       
+
+
+                    </span>
+
+
+                </div>
+
+
+
+
+                <div class="project-actions">
+
+
+                    <a th:href="${project.githubUrl}"
+                       target="_blank"
+                       class="btn-primary-custom">
+
+                        <i class="bi bi-github"></i>
+                        GitHub
+
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+        </article>
+
+
+    </section>
+
+
+</main>
+
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

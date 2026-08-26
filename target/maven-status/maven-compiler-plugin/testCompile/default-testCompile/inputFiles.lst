@@ -1,1 +1,5 @@
-/home/ludo/Bureau/Portfolio-Java/src/test/java/com/hopefull117/portfolio/java/JavaApplicationTests.java
+/home/ludo/Bureau/workspace/Portfolio-Java/src/test/java/com/hopefull117/portfolio/java/JavaApplicationTests.java
+/home/ludo/Bureau/workspace/Portfolio-Java/src/test/java/com/hopefull117/portfolio/java/controller/AdminArticleControllerTest.java
+/home/ludo/Bureau/workspace/Portfolio-Java/src/test/java/com/hopefull117/portfolio/java/controller/ArticleControllerTest.java
+/home/ludo/Bureau/workspace/Portfolio-Java/src/test/java/com/hopefull117/portfolio/java/service/ArticleServiceTest.java
+/home/ludo/Bureau/workspace/Portfolio-Java/src/test/java/com/hopefull117/portfolio/java/service/SlugGeneratorTest.java

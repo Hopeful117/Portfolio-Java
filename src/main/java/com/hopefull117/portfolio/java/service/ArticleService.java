@@ -1,10 +1,14 @@
 package com.hopefull117.portfolio.java.service;
 
 import com.hopefull117.portfolio.java.dto.ArticleViewDto;
+import com.hopefull117.portfolio.java.exception.ArticlePersistenceException;
+import com.hopefull117.portfolio.java.exception.ArticleSlugConflictException;
 import com.hopefull117.portfolio.java.exception.EntityNotFoundException;
 import com.hopefull117.portfolio.java.model.Article;
 import com.hopefull117.portfolio.java.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,10 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArticleService {
 
+    private static final int MAX_SLUG_ATTEMPTS = 1000;
 
     private final ArticleRepository articleRepository;
     private final FileStorageService fileStorageService;
     private final MarkdownService markdownService;
+    private final SlugGenerator slugGenerator;
 
 
 
@@ -43,6 +49,18 @@ public class ArticleService {
 
 
     public Article create(Article article, MultipartFile file) throws IOException {
+        String baseSlug = slugGenerator.generate(article.getTitle());
+        int candidateNumber;
+
+        try {
+            candidateNumber = findAvailableCandidateNumber(baseSlug, 1);
+        } catch (DataAccessException exception) {
+            throw new ArticlePersistenceException("Impossible d'enregistrer l'article pour le moment", exception);
+        }
+
+        article.setId(null);
+        article.setSlug(slugCandidate(baseSlug, candidateNumber));
+
         if(!file.isEmpty()){
             article.setCoverImage(fileStorageService.save(file));
         }
@@ -51,7 +69,26 @@ public class ArticleService {
         article.setCreatedAt(now);
         article.setUpdatedAt(now);
 
-        return articleRepository.save(article);
+        while (candidateNumber <= MAX_SLUG_ATTEMPTS) {
+            try {
+                return articleRepository.save(article);
+            } catch (DuplicateKeyException exception) {
+                candidateNumber++;
+                try {
+                    candidateNumber = findAvailableCandidateNumber(baseSlug, candidateNumber);
+                    article.setSlug(slugCandidate(baseSlug, candidateNumber));
+                } catch (DataAccessException dataAccessException) {
+                    throw new ArticlePersistenceException(
+                            "Impossible d'enregistrer l'article pour le moment",
+                            dataAccessException
+                    );
+                }
+            } catch (DataAccessException exception) {
+                throw new ArticlePersistenceException("Impossible d'enregistrer l'article pour le moment", exception);
+            }
+        }
+
+        throw slugConflict();
 
     }
 
@@ -68,8 +105,6 @@ public class ArticleService {
 
         existingArticle.setTitle(article.getTitle());
 
-        existingArticle.setSlug(article.getSlug());
-
         existingArticle.setExcerpt(article.getExcerpt());
 
         existingArticle.setContent(article.getContent());
@@ -82,7 +117,11 @@ public class ArticleService {
         existingArticle.setUpdatedAt(java.time.Instant.now());
 
 
-        articleRepository.save(existingArticle);
+        try {
+            articleRepository.save(existingArticle);
+        } catch (DataAccessException exception) {
+            throw new ArticlePersistenceException("Impossible d'enregistrer l'article pour le moment", exception);
+        }
 
     }
 
@@ -131,6 +170,34 @@ public class ArticleService {
                 .tags(article.getTags())
                 .createdAt(article.getCreatedAt())
                 .build();
+    }
+
+    private int findAvailableCandidateNumber(String baseSlug, int start) {
+        for (int candidateNumber = start; candidateNumber <= MAX_SLUG_ATTEMPTS; candidateNumber++) {
+            if (!articleRepository.existsBySlug(slugCandidate(baseSlug, candidateNumber))) {
+                return candidateNumber;
+            }
+        }
+
+        throw slugConflict();
+    }
+
+    private String slugCandidate(String baseSlug, int candidateNumber) {
+        if (candidateNumber == 1) {
+            return baseSlug;
+        }
+
+        String suffix = "-" + candidateNumber;
+        int maximumBaseLength = SlugGenerator.MAX_LENGTH - suffix.length();
+        String boundedBase = baseSlug.substring(0, Math.min(baseSlug.length(), maximumBaseLength))
+                .replaceAll("-+$", "");
+        return boundedBase + suffix;
+    }
+
+    private ArticleSlugConflictException slugConflict() {
+        return new ArticleSlugConflictException(
+                "Impossible de générer une URL unique pour cet article"
+        );
     }
 
 }

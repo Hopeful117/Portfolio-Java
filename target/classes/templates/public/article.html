@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+
+<th:block th:replace="~{fragments/head :: head(${article.title})}"></th:block>
+
+
+<body>
+
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+
+
+
+<main class="container py-5">
+
+
+    <article class="article-page">
+
+
+
+        <header class="article-header">
+
+
+            <h1 th:text="${article.title}">
+                Titre de l'article
+            </h1>
+
+
+
+            <div class="article-meta">
+
+
+                <span>
+
+                    <i class="bi bi-calendar"></i>
+
+                    <span th:text="${#temporals.format(article.createdAt,'dd/MM/yyyy')}">
+                        01/01/2026
+                    </span>
+
+                </span>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="article-tags">
+
+
+                <span class="article-tag"
+                      th:each="tag : ${article.tags}"
+                      th:text="${tag}">
+                    Java
+                </span>
+
+
+            </div>
+
+
+
+        </header>
+
+
+
+
+
+        <div class="article-cover article-cover-large"
+             th:if="${article.coverImage != null}">
+
+
+            <img th:src="${article.coverImage}"
+                 th:alt="${article.title}">
+
+
+        </div>
+
+
+
+
+
+
+        <section class="article-body">
+
+
+            <div th:utext="${article.content}"></div>
+
+
+        </section>
+
+
+
+
+
+
+        <div class="article-navigation">
+
+
+            <a th:href="@{/blog}"
+               class="btn-secondary-custom">
+
+                ← Retour au DevBlog
+
+            </a>
+
+
+        </div>
+
+
+
+    </article>
+
+
+
+</main>
+
+
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+
+</html>
