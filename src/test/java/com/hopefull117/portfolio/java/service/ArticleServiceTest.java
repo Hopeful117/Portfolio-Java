@@ -22,6 +22,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,6 +41,8 @@ class ArticleServiceTest {
     private FileStorageService fileStorageService;
     @Mock
     private MarkdownService markdownService;
+    @Mock
+    private ArticleImageProcessor articleImageProcessor;
 
     private ArticleService articleService;
     private MockMultipartFile emptyImage;
@@ -50,7 +53,8 @@ class ArticleServiceTest {
                 articleRepository,
                 fileStorageService,
                 markdownService,
-                new SlugGenerator()
+                new SlugGenerator(),
+                articleImageProcessor
         );
         emptyImage = new MockMultipartFile("image", new byte[0]);
     }
@@ -73,7 +77,7 @@ class ArticleServiceTest {
 
         assertSame(article, saved);
         assertEquals("java-spring-boot", saved.getSlug());
-        assertEquals(null, saved.getId());
+        assertNull(saved.getId());
         assertEquals("Résumé", saved.getExcerpt());
         assertEquals("# Contenu", saved.getContent());
         assertEquals(List.of("Java", "Spring"), saved.getTags());
@@ -81,7 +85,7 @@ class ArticleServiceTest {
         assertNotNull(saved.getCreatedAt());
         assertEquals(saved.getCreatedAt(), saved.getUpdatedAt());
         verify(articleRepository).save(article);
-        verify(fileStorageService, never()).save(any());
+        verify(fileStorageService, never()).saveArticleWebP(any());
     }
 
     @Test
@@ -126,21 +130,63 @@ class ArticleServiceTest {
                 () -> articleService.create(article("Same title"), emptyImage)
         );
         verify(articleRepository, never()).save(any(Article.class));
-        verify(fileStorageService, never()).save(any());
+        verify(fileStorageService, never()).saveArticleWebP(any());
     }
 
     @Test
-    void createStoresCoverImageOnce() throws IOException {
+    void createWithImageProcessesAndStoresWebP() throws IOException {
         Article article = article("Cover image");
-        MockMultipartFile image = new MockMultipartFile("image", "cover.png", "image/png", new byte[]{1});
+        MockMultipartFile image = new MockMultipartFile("image", "cover.png", "image/png", new byte[]{1, 2, 3});
+        ProcessedImage processed = new ProcessedImage(new byte[]{4, 5, 6}, 800, 600);
+
         when(articleRepository.existsBySlug("cover-image")).thenReturn(false);
-        when(fileStorageService.save(image)).thenReturn("/uploads/cover.png");
+        when(articleImageProcessor.process(image)).thenReturn(processed);
+        when(fileStorageService.saveArticleWebP(processed.data())).thenReturn("/uploads/articles/abc.webp");
         when(articleRepository.save(article)).thenReturn(article);
 
         Article saved = articleService.create(article, image);
 
-        assertEquals("/uploads/cover.png", saved.getCoverImage());
-        verify(fileStorageService).save(image);
+        assertEquals("/uploads/articles/abc.webp", saved.getCoverImage());
+        verify(articleImageProcessor).process(image);
+        verify(fileStorageService).saveArticleWebP(processed.data());
+    }
+
+    @Test
+    void createWithImageCleansUpOnPersistenceFailure() throws IOException {
+        Article article = article("Cover image");
+        MockMultipartFile image = new MockMultipartFile("image", "cover.png", "image/png", new byte[]{1});
+        ProcessedImage processed = new ProcessedImage(new byte[]{4, 5, 6}, 800, 600);
+
+        when(articleRepository.existsBySlug("cover-image")).thenReturn(false);
+        when(articleImageProcessor.process(image)).thenReturn(processed);
+        when(fileStorageService.saveArticleWebP(processed.data())).thenReturn("/uploads/articles/abc.webp");
+        when(fileStorageService.isArticleOwned("/uploads/articles/abc.webp")).thenReturn(true);
+        when(articleRepository.save(article)).thenThrow(new DataAccessResourceFailureException("mongo down"));
+
+        assertThrows(ArticlePersistenceException.class,
+                () -> articleService.create(article, image));
+
+        verify(fileStorageService).deleteArticleAsset("/uploads/articles/abc.webp");
+    }
+
+    @Test
+    void createWithImageCleansUpWhenRetryLookupFails() throws IOException {
+        Article article = article("Cover image");
+        MockMultipartFile image = new MockMultipartFile("image", "cover.png", "image/png", new byte[]{1});
+        ProcessedImage processed = new ProcessedImage(new byte[]{4, 5, 6}, 800, 600);
+
+        when(articleRepository.existsBySlug(anyString()))
+                .thenReturn(false)
+                .thenThrow(new DataAccessResourceFailureException("mongo down"));
+        when(articleImageProcessor.process(image)).thenReturn(processed);
+        when(fileStorageService.saveArticleWebP(processed.data())).thenReturn("/uploads/articles/abc.webp");
+        when(fileStorageService.isArticleOwned("/uploads/articles/abc.webp")).thenReturn(true);
+        when(articleRepository.save(article)).thenThrow(new DuplicateKeyException("duplicate"));
+
+        assertThrows(ArticlePersistenceException.class,
+                () -> articleService.create(article, image));
+
+        verify(fileStorageService).deleteArticleAsset("/uploads/articles/abc.webp");
     }
 
     @Test
@@ -152,7 +198,7 @@ class ArticleServiceTest {
                 .slug("Old_Article-Slug")
                 .excerpt("Old excerpt")
                 .content("Old content")
-                .coverImage("/uploads/old.png")
+                .coverImage("/uploads/projects/old.png")
                 .tags(List.of("Old"))
                 .published(false)
                 .createdAt(createdAt)
@@ -176,25 +222,121 @@ class ArticleServiceTest {
         assertEquals("New content", existing.getContent());
         assertEquals(List.of("New"), existing.getTags());
         assertTrue(existing.isPublished());
-        assertEquals("/uploads/old.png", existing.getCoverImage());
+        assertEquals("/uploads/projects/old.png", existing.getCoverImage());
         assertEquals(createdAt, existing.getCreatedAt());
         assertTrue(existing.getUpdatedAt().isAfter(createdAt));
-        verify(fileStorageService, never()).save(any());
+        verify(fileStorageService, never()).saveArticleWebP(any());
         verify(articleRepository).save(existing);
     }
 
     @Test
-    void updateChangesCoverWithoutChangingSlug() throws IOException {
-        Article existing = Article.builder().id("id").slug("stable-slug").build();
+    void updateWithNewImageStoresWebPAndCleansOldOwnedFile() throws IOException {
+        Instant createdAt = Instant.parse("2025-01-01T10:00:00Z");
+        Article existing = Article.builder()
+                .id("article-id")
+                .slug("stable-slug")
+                .coverImage("/uploads/articles/old.webp")
+                .createdAt(createdAt)
+                .build();
         Article changes = Article.builder().title("Changed").build();
         MockMultipartFile image = new MockMultipartFile("image", "new.png", "image/png", new byte[]{1});
-        when(articleRepository.findById("id")).thenReturn(java.util.Optional.of(existing));
-        when(fileStorageService.save(image)).thenReturn("/uploads/new.png");
+        ProcessedImage processed = new ProcessedImage(new byte[]{4, 5, 6}, 800, 600);
 
-        articleService.update("id", changes, image);
+        when(articleRepository.findById("article-id")).thenReturn(java.util.Optional.of(existing));
+        when(articleImageProcessor.process(image)).thenReturn(processed);
+        when(fileStorageService.saveArticleWebP(processed.data())).thenReturn("/uploads/articles/new.webp");
+        when(fileStorageService.isArticleOwned("/uploads/articles/old.webp")).thenReturn(true);
+
+        articleService.update("article-id", changes, image);
 
         assertEquals("stable-slug", existing.getSlug());
-        assertEquals("/uploads/new.png", existing.getCoverImage());
+        assertEquals("/uploads/articles/new.webp", existing.getCoverImage());
+        verify(fileStorageService).deleteArticleAsset("/uploads/articles/old.webp");
+    }
+
+    @Test
+    void updateWithNewImageDoesNotDeleteLegacyFile() throws IOException {
+        Article existing = Article.builder()
+                .id("article-id")
+                .slug("stable-slug")
+                .coverImage("/uploads/projects/legacy.png")
+                .build();
+        Article changes = Article.builder().title("Changed").build();
+        MockMultipartFile image = new MockMultipartFile("image", "new.png", "image/png", new byte[]{1});
+        ProcessedImage processed = new ProcessedImage(new byte[]{4, 5, 6}, 800, 600);
+
+        when(articleRepository.findById("article-id")).thenReturn(java.util.Optional.of(existing));
+        when(articleImageProcessor.process(image)).thenReturn(processed);
+        when(fileStorageService.saveArticleWebP(processed.data())).thenReturn("/uploads/articles/new.webp");
+        when(fileStorageService.isArticleOwned("/uploads/projects/legacy.png")).thenReturn(false);
+
+        articleService.update("article-id", changes, image);
+
+        assertEquals("/uploads/articles/new.webp", existing.getCoverImage());
+        verify(fileStorageService, never()).deleteArticleAsset("/uploads/projects/legacy.png");
+    }
+
+    @Test
+    void updateWithImageFailurePreservesOldCover() throws IOException {
+        Article existing = Article.builder()
+                .id("article-id")
+                .coverImage("/uploads/articles/old.webp")
+                .build();
+        Article changes = Article.builder().title("Changed").build();
+        MockMultipartFile image = new MockMultipartFile("image", "new.png", "image/png", new byte[]{1});
+
+        when(articleRepository.findById("article-id")).thenReturn(java.util.Optional.of(existing));
+        when(articleImageProcessor.process(image)).thenThrow(new IOException("decode failed"));
+
+        assertThrows(IOException.class,
+                () -> articleService.update("article-id", changes, image));
+
+        assertEquals("/uploads/articles/old.webp", existing.getCoverImage());
+    }
+
+    @Test
+    void deleteByIdWithOwnedCoverDeletesFileAfterDbDelete() throws IOException {
+        Article article = Article.builder()
+                .id("article-id")
+                .coverImage("/uploads/articles/cover.webp")
+                .build();
+        when(articleRepository.findById("article-id")).thenReturn(java.util.Optional.of(article));
+        when(fileStorageService.isArticleOwned("/uploads/articles/cover.webp")).thenReturn(true);
+
+        articleService.deleteById("article-id");
+
+        verify(articleRepository).deleteById("article-id");
+        verify(fileStorageService).deleteArticleAsset("/uploads/articles/cover.webp");
+    }
+
+    @Test
+    void deleteByIdWithLegacyCoverDoesNotDeleteFile() throws IOException {
+        Article article = Article.builder()
+                .id("article-id")
+                .coverImage("/uploads/projects/legacy.png")
+                .build();
+        when(articleRepository.findById("article-id")).thenReturn(java.util.Optional.of(article));
+        when(fileStorageService.isArticleOwned("/uploads/projects/legacy.png")).thenReturn(false);
+
+        articleService.deleteById("article-id");
+
+        verify(articleRepository).deleteById("article-id");
+        verify(fileStorageService, never()).deleteArticleAsset("/uploads/projects/legacy.png");
+    }
+
+    @Test
+    void deleteByIdWithNoCoverDoesNotAttemptCleanup() throws IOException {
+        Article article = Article.builder()
+                .id("article-id")
+                .coverImage(null)
+                .build();
+        when(articleRepository.findById("article-id")).thenReturn(java.util.Optional.of(article));
+        when(fileStorageService.isArticleOwned(null)).thenReturn(false);
+
+        articleService.deleteById("article-id");
+
+        verify(articleRepository).deleteById("article-id");
+        verify(fileStorageService, never()).deleteArticleAsset(any());
     }
 
     @Test

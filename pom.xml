@@ -117,6 +117,16 @@
 			<artifactId>commonmark</artifactId>
 			<version>0.24.0</version>
 		</dependency>
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>0.4.21</version>
+		</dependency>
+		<dependency>
+			<groupId>dev.matrixlab.webp4j</groupId>
+			<artifactId>webp4j-core</artifactId>
+			<version>2.5.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
