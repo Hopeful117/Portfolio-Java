@@ -5,8 +5,12 @@ on:
     branches:
       - main
 
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,8 +24,20 @@ jobs:
           java-version: '21'
           cache: maven
 
-      
+      - name: Run tests
+        run: ./mvnw test
 
+  deploy:
+    needs: test
+
+    # Deploy only after a push/merge to main.
+    # Pull requests run the test job only.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.2.2
         with:
@@ -33,7 +49,6 @@ jobs:
             set -e
 
             cd /var/www/Portfolio-java
-
 
             echo "Pulling latest changes..."
             git pull origin main
