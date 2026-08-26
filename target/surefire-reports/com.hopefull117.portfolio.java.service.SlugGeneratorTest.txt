@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.hopefull117.portfolio.java.service.SlugGeneratorTest
 -------------------------------------------------------------------------------
-Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.091 s -- in com.hopefull117.portfolio.java.service.SlugGeneratorTest
+Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.106 s -- in com.hopefull117.portfolio.java.service.SlugGeneratorTest
