@@ -267,10 +267,18 @@ public class AdminController {
         try {
             articleService.create(article,image);
         } catch (IllegalArgumentException exception) {
-            bindingResult.rejectValue("title", "article.title.slug", exception.getMessage());
+            if (exception.getMessage() != null && exception.getMessage().contains("titre")) {
+                bindingResult.rejectValue("title", "article.title.slug", exception.getMessage());
+            } else {
+                bindingResult.reject("article.image", exception.getMessage());
+            }
             return "admin/articles/form-articles";
         } catch (ArticleSlugConflictException | ArticlePersistenceException exception) {
             bindingResult.reject("article.save", exception.getMessage());
+            return "admin/articles/form-articles";
+        } catch (IOException exception) {
+            log.warn("Échec du traitement de l'image de couverture: {}", exception.getMessage());
+            bindingResult.reject("article.image", "Impossible de traiter l'image pour le moment");
             return "admin/articles/form-articles";
         }
 
@@ -306,8 +314,15 @@ public class AdminController {
 
         try {
             articleService.update(id, article,image);
+        } catch (IllegalArgumentException exception) {
+            bindingResult.reject("article.image", exception.getMessage());
+            return "admin/articles/form-edit-articles";
         } catch (ArticlePersistenceException exception) {
             bindingResult.reject("article.save", exception.getMessage());
+            return "admin/articles/form-edit-articles";
+        } catch (IOException exception) {
+            log.warn("Échec du traitement de l'image de couverture: {}", exception.getMessage());
+            bindingResult.reject("article.image", "Impossible de traiter l'image pour le moment");
             return "admin/articles/form-edit-articles";
         }
 

@@ -25,7 +25,10 @@ import java.nio.charset.StandardCharsets;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -114,12 +117,51 @@ class AdminArticleControllerTest {
     }
 
     @Test
+    void invalidImageFormatReturnsCreateFormWithError() throws Exception {
+        when(articleService.create(any(Article.class), any()))
+                .thenThrow(new IllegalArgumentException("Format d'image non supporté. Formats acceptés : PNG, JPEG, WebP"));
+
+        mockMvc.perform(multipart("/admin/articles")
+                        .file(new MockMultipartFile("image", "test.gif", "image/gif", new byte[1]))
+                        .param("title", "Valid title"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/articles/form-articles"))
+                .andExpect(model().attributeHasErrors("article"));
+    }
+
+    @Test
+    void oversizedImageReturnsCreateFormWithError() throws Exception {
+        when(articleService.create(any(Article.class), any()))
+                .thenThrow(new IllegalArgumentException("Le fichier est trop volumineux. Taille maximale : 5 Mo"));
+
+        mockMvc.perform(multipart("/admin/articles")
+                        .file(new MockMultipartFile("image", "big.jpg", "image/jpeg", new byte[1]))
+                        .param("title", "Valid title"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/articles/form-articles"))
+                .andExpect(model().attributeHasErrors("article"));
+    }
+
+    @Test
     void persistenceFailureReturnsFormWithoutExposingCause() throws Exception {
         when(articleService.create(any(Article.class), any()))
                 .thenThrow(new ArticlePersistenceException("Impossible d'enregistrer l'article pour le moment", new RuntimeException("mongo")));
 
         mockMvc.perform(multipart("/admin/articles")
                         .file(new MockMultipartFile("image", new byte[0]))
+                        .param("title", "Valid title"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/articles/form-articles"))
+                .andExpect(model().attributeHasErrors("article"));
+    }
+
+    @Test
+    void imageProcessingFailureReturnsCreateFormWithFriendlyError() throws Exception {
+        when(articleService.create(any(Article.class), any()))
+                .thenThrow(new IOException("codec details"));
+
+        mockMvc.perform(multipart("/admin/articles")
+                        .file(new MockMultipartFile("image", "cover.jpg", "image/jpeg", new byte[]{1}))
                         .param("title", "Valid title"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/articles/form-articles"))
@@ -140,6 +182,32 @@ class AdminArticleControllerTest {
     }
 
     @Test
+    void invalidImageFormatReturnsEditFormWithError() throws Exception {
+        doThrow(new IllegalArgumentException("Format d'image non supporté. Formats acceptés : PNG, JPEG, WebP"))
+                .when(articleService).update(anyString(), any(Article.class), any());
+
+        mockMvc.perform(multipart("/admin/articles/edit/article-id")
+                        .file(new MockMultipartFile("image", "test.gif", "image/gif", new byte[1]))
+                        .param("title", "Changed title"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/articles/form-edit-articles"))
+                .andExpect(model().attributeHasErrors("article"));
+    }
+
+    @Test
+    void imageProcessingFailureReturnsEditFormWithFriendlyError() throws Exception {
+        doThrow(new IOException("codec details"))
+                .when(articleService).update(anyString(), any(Article.class), any());
+
+        mockMvc.perform(multipart("/admin/articles/edit/article-id")
+                        .file(new MockMultipartFile("image", "cover.jpg", "image/jpeg", new byte[]{1}))
+                        .param("title", "Changed title"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/articles/form-edit-articles"))
+                .andExpect(model().attributeHasErrors("article"));
+    }
+
+    @Test
     void articleFormsHaveNoEditableSlugField() throws IOException {
         String createForm = resource("templates/admin/articles/form-articles.html");
         String editForm = resource("templates/admin/articles/form-edit-articles.html");
@@ -148,6 +216,18 @@ class AdminArticleControllerTest {
         assertFalse(editForm.contains("*{slug}"));
         assertFalse(createForm.contains("name=\"slug\""));
         assertFalse(editForm.contains("name=\"slug\""));
+    }
+
+    @Test
+    void createFormHasAcceptAttributeForImages() throws IOException {
+        String createForm = resource("templates/admin/articles/form-articles.html");
+        assertTrue(createForm.contains("accept=\"image/png,image/jpeg,image/webp\""));
+    }
+
+    @Test
+    void editFormHasAcceptAttributeForImages() throws IOException {
+        String editForm = resource("templates/admin/articles/form-edit-articles.html");
+        assertTrue(editForm.contains("accept=\"image/png,image/jpeg,image/webp\""));
     }
 
     private String resource(String path) throws IOException {
