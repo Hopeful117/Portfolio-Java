@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,6 +20,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
@@ -231,6 +232,6 @@ class AdminArticleControllerTest {
     }
 
     private String resource(String path) throws IOException {
-        return new ClassPathResource(path).getContentAsString(StandardCharsets.UTF_8);
+        return Files.readString(Path.of("src/main/resources").resolve(path), StandardCharsets.UTF_8);
     }
 }
