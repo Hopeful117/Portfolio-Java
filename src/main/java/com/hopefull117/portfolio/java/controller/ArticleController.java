@@ -40,7 +40,7 @@ public class ArticleController {
                           Model model){
 
 
-        ArticleViewDto article = articleService.findBySlug(slug);
+        ArticleViewDto article = articleService.findPublicViewBySlug(slug);
 
 
         model.addAttribute("article", article);

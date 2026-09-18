@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Horizon–Beam logo refinement board</title>
+  <desc id="desc">Three bounded logo candidates shown at large, navigation, and flat fallback sizes.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#111821"/><stop offset="1" stop-color="#0d131b"/></linearGradient>
+    <linearGradient id="a" x1="0" x2="1"><stop stop-color="#70a7ff"/><stop offset=".5" stop-color="#8bbcff"/><stop offset="1" stop-color="#70a7ff"/></linearGradient>
+    <linearGradient id="b" x1="0" x2="1"><stop stop-color="#5d8fe5"/><stop offset=".5" stop-color="#9cdbff"/><stop offset="1" stop-color="#5d8fe5"/></linearGradient>
+    <linearGradient id="c" x1="0" x2="1"><stop stop-color="#70a7ff"/><stop offset=".5" stop-color="#b5e5ff"/><stop offset="1" stop-color="#70a7ff"/></linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="5"/></filter>
+  </defs>
+  <rect width="1200" height="760" fill="url(#bg)"/>
+  <text x="64" y="64" fill="#e9eef5" font-family="ui-sans-serif,system-ui,sans-serif" font-size="25" font-weight="800">HORIZON–BEAM / REFINEMENT BOARD</text>
+  <text x="64" y="94" fill="#aab6c5" font-family="ui-monospace,monospace" font-size="13">same family · static SVG · flat fallbacks · human selection required</text>
+  <g font-family="ui-sans-serif,system-ui,sans-serif">
+    <rect x="48" y="132" width="352" height="560" rx="14" fill="#171f2b" stroke="#2d3a4b"/>
+    <rect x="424" y="132" width="352" height="560" rx="14" fill="#171f2b" stroke="#2d3a4b"/>
+    <rect x="800" y="132" width="352" height="560" rx="14" fill="#171f2b" stroke="#2d3a4b"/>
+    <text x="80" y="178" fill="#70a7ff" font-size="17" font-weight="800">A — BEAM LIGHT</text>
+    <text x="456" y="178" fill="#70a7ff" font-size="17" font-weight="800">B — HORIZON DEPTH</text>
+    <text x="832" y="178" fill="#70a7ff" font-size="17" font-weight="800">C — SIGNAL BEAM</text>
+    <text x="80" y="206" fill="#aab6c5" font-size="13">current geometry + restrained luminosity</text>
+    <text x="456" y="206" fill="#aab6c5" font-size="13">deeper arc + concentrated origin</text>
+    <text x="832" y="206" fill="#aab6c5" font-size="13">assertive silhouette + signal rhythm</text>
+  </g>
+  <!-- A large / navigation / flat -->
+  <g transform="translate(176 242)"><circle cx="0" cy="0" r="44" fill="#8fc3ff" opacity=".12" filter="url(#soft)"/><path d="M-40 10c22-24 58-24 80 0" fill="none" stroke="url(#a)" stroke-width="6" stroke-linecap="round"/><path d="M0-23l7 17-7 15-7-15z" fill="#f1f6ff"/><path d="M-2 8h4v30h-4z" fill="#8fc3ff"/></g>
+  <g transform="translate(138 415) scale(.5)"><path d="M-40 10c22-24 58-24 80 0" fill="none" stroke="#70a7ff" stroke-width="6" stroke-linecap="round"/><path d="M0-23l7 17-7 15-7-15z" fill="#f1f6ff"/><path d="M-2 8h4v30h-4z" fill="#70a7ff"/></g>
+  <text x="188" y="420" fill="#718096" font-family="ui-monospace,monospace" font-size="12">32px</text>
+  <g transform="translate(140 550) scale(.25)"><path d="M-40 10c22-24 58-24 80 0" fill="none" stroke="#70a7ff" stroke-width="6" stroke-linecap="round"/><path d="M0-23l7 17-7 15-7-15z" fill="#70a7ff"/><path d="M-2 8h4v30h-4z" fill="#70a7ff"/></g>
+  <text x="174" y="554" fill="#718096" font-family="ui-monospace,monospace" font-size="12">16px flat</text>
+  <!-- B large / navigation / flat -->
+  <g transform="translate(552 242)"><circle cx="0" cy="2" r="56" fill="#8ed6ff" opacity=".18" filter="url(#soft)"/><path d="M-46 10c24-33 68-33 92 0" fill="none" stroke="url(#b)" stroke-width="7" stroke-linecap="round"/><path d="M0-25l8 18-8 18-8-18z" fill="#cbeeff"/><path d="M-4 11h8v30h-8z" fill="#8ed6ff"/></g>
+  <g transform="translate(514 415) scale(.5)"><path d="M-46 10c24-33 68-33 92 0" fill="none" stroke="#70a7ff" stroke-width="7" stroke-linecap="round"/><path d="M0-25l8 18-8 18-8-18z" fill="#f1f6ff"/><path d="M-4 11h8v30h-8z" fill="#70a7ff"/></g>
+  <text x="564" y="420" fill="#718096" font-family="ui-monospace,monospace" font-size="12">32px</text>
+  <g transform="translate(516 550) scale(.25)"><path d="M-46 10c24-33 68-33 92 0" fill="none" stroke="#70a7ff" stroke-width="7" stroke-linecap="round"/><path d="M0-25l8 18-8 18-8-18z" fill="#70a7ff"/><path d="M-4 11h8v30h-8z" fill="#70a7ff"/></g>
+  <text x="550" y="554" fill="#718096" font-family="ui-monospace,monospace" font-size="12">16px flat</text>
+  <!-- C large / navigation / flat -->
+  <g transform="translate(928 242)"><path d="M-40 10c22-24 58-24 80 0" fill="none" stroke="url(#c)" stroke-width="7" stroke-linecap="round"/><path d="M0-26l9 19-9 19-9-19z" fill="#70a7ff"/><path d="M-4 9h8v31h-8z" fill="#b5e5ff"/><path d="M0 0l5 6-5 6-5-6z" fill="#e9f7ff"/></g>
+  <g transform="translate(890 415) scale(.5)"><path d="M-40 10c22-24 58-24 80 0" fill="none" stroke="#70a7ff" stroke-width="7" stroke-linecap="round"/><path d="M0-26l9 19-9 19-9-19z" fill="#70a7ff"/><path d="M-4 9h8v31h-8z" fill="#70a7ff"/><path d="M0 0l5 6-5 6-5-6z" fill="#70a7ff"/></g>
+  <text x="940" y="420" fill="#718096" font-family="ui-monospace,monospace" font-size="12">32px</text>
+  <g transform="translate(892 550) scale(.25)"><path d="M-40 10c22-24 58-24 80 0" fill="none" stroke="#70a7ff" stroke-width="7" stroke-linecap="round"/><path d="M0-26l9 19-9 19-9-19z" fill="#70a7ff"/><path d="M-4 9h8v31h-8z" fill="#70a7ff"/><path d="M0 0l5 6-5 6-5-6z" fill="#70a7ff"/></g>
+  <text x="926" y="554" fill="#718096" font-family="ui-monospace,monospace" font-size="12">16px flat</text>
+  <text x="64" y="730" fill="#718096" font-family="ui-monospace,monospace" font-size="12">effects are restrained · geometry remains legible without them · primary graphite validation</text>
+</svg>

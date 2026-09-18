@@ -18,6 +18,8 @@ public class ArticleViewDto {
 
     private String content;
 
+    private List<TableOfContentsEntry> tableOfContents;
+
     private String coverImage;
 
     private List<String> tags;

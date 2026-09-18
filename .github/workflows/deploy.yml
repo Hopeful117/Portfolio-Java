@@ -24,8 +24,30 @@ jobs:
           java-version: '21'
           cache: maven
 
-      - name: Run tests
+      - name: Run Spring tests
         run: ./mvnw test
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Run frontend tests
+        working-directory: frontend
+        run: npm test -- --watch=false --no-progress
+
+      - name: Build frontend SSR
+        working-directory: frontend
+        run: npm run build
+
+      - name: Build release containers
+        run: docker compose build portfolio frontend
 
   deploy:
     needs: test
@@ -50,13 +72,4 @@ jobs:
 
             cd /var/www/Portfolio-java
 
-            echo "Pulling latest changes..."
-            git pull origin main
-
-            echo "Rebuilding containers..."
-            docker compose up -d --build
-
-            echo "Cleaning unused images..."
-            docker image prune -f
-
-            echo "Deployment completed!"
+            ./scripts/deploy-production.sh

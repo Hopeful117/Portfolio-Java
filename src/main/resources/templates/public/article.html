@@ -88,6 +88,21 @@
         <section class="article-body">
 
 
+            <nav class="article-toc"
+                 aria-label="Table des matières"
+                 th:if="${article.tableOfContents != null and article.tableOfContents.size() > 1}">
+                <h2>Table des matières</h2>
+                <ol>
+                    <li th:each="entry : ${article.tableOfContents}"
+                        th:class="'article-toc-level-' + entry.level">
+                        <a th:href="${'#' + entry.id}"
+                           th:text="${entry.label}">
+                            Section
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+
             <div th:utext="${article.content}"></div>
 
 

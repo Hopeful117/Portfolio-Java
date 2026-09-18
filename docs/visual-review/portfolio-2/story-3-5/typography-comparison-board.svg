@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="760" viewBox="0 0 1440 760">
+  <rect width="1440" height="760" fill="#10151d"/>
+  <style>text{fill:#e9eef5;font-family:system-ui,sans-serif} .meta{fill:#70a7ff;font:700 16px ui-monospace,monospace;letter-spacing:2px} .body{fill:#aab6c5;font-size:20px} .rule{stroke:#2d3a4b}</style>
+  <text x="64" y="70" font-size="36" font-weight="700">Typography comparison / same evidence surface</text>
+  <line class="rule" x1="64" y1="100" x2="1376" y2="100"/>
+  <text class="meta" x="64" y="150">A / MODERN TECHNICAL SANS / RECOMMENDED</text>
+  <text x="64" y="205" font-size="58" font-weight="600">Evidence survives density.</text><text class="body" x="64" y="245">System sans display + body · ui-monospace code · 500/600/700/800</text>
+  <text class="meta" x="64" y="325">B / TECHNICAL SANS + RESTRAINED EDITORIAL SERIF</text>
+  <text x="64" y="380" font-family="Iowan Old Style, Palatino Linotype, serif" font-size="58">Evidence survives density.</text><text class="body" x="64" y="420">Technical sans body · Iowan Old Style / Palatino fallback display · 500/600/700</text>
+  <text class="meta" x="64" y="500">C / MODERN HUMANIST / TECHNICAL SYSTEM</text>
+  <text x="64" y="555" font-family="Trebuchet MS,Segoe UI,sans-serif" font-size="58" font-weight="600">Evidence survives density.</text><text class="body" x="64" y="595">Trebuchet MS + system fallback · humanist display · ui-monospace code</text>
+  <text class="body" x="64" y="700">Comparison artifact only. Production currently applies A; human review remains open.</text>
+</svg>

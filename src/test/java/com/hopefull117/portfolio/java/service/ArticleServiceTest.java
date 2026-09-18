@@ -2,6 +2,9 @@ package com.hopefull117.portfolio.java.service;
 
 import com.hopefull117.portfolio.java.exception.ArticlePersistenceException;
 import com.hopefull117.portfolio.java.exception.ArticleSlugConflictException;
+import com.hopefull117.portfolio.java.exception.EntityNotFoundException;
+import com.hopefull117.portfolio.java.dto.RenderedMarkdown;
+import com.hopefull117.portfolio.java.dto.TableOfContentsEntry;
 import com.hopefull117.portfolio.java.model.Article;
 import com.hopefull117.portfolio.java.repository.ArticleRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -337,6 +340,80 @@ class ArticleServiceTest {
 
         verify(articleRepository).deleteById("article-id");
         verify(fileStorageService, never()).deleteArticleAsset(any());
+    }
+
+    @Test
+    void publicSlugLookupDoesNotReturnDrafts() {
+        when(articleRepository.findBySlugAndPublishedTrue("draft-slug"))
+                .thenReturn(java.util.Optional.empty());
+
+        assertThrows(EntityNotFoundException.class,
+                () -> articleService.findPublicDetailBySlug("draft-slug"));
+        verify(markdownService, never()).render(anyString());
+    }
+
+    @Test
+    void publicSlugLookupRendersPublishedArticleWithoutPersistenceFields() {
+        Article article = Article.builder()
+                .id("internal-id")
+                .title("Published article")
+                .slug("published-article")
+                .excerpt("Summary")
+                .content("## Results")
+                .tags(List.of("Java"))
+                .published(true)
+                .createdAt(Instant.parse("2025-01-01T10:00:00Z"))
+                .updatedAt(Instant.parse("2025-01-02T10:00:00Z"))
+                .build();
+        when(articleRepository.findBySlugAndPublishedTrue("published-article"))
+                .thenReturn(java.util.Optional.of(article));
+        when(markdownService.render("## Results"))
+                .thenReturn(new RenderedMarkdown(
+                        "<h2 id=\"results\">Results</h2>",
+                        List.of(new TableOfContentsEntry("results", "Results", 2))));
+
+        var publicArticle = articleService.findPublicDetailBySlug("published-article");
+
+        assertEquals("Published article", publicArticle.title());
+        assertEquals("published-article", publicArticle.slug());
+        assertEquals("<h2 id=\"results\">Results</h2>", publicArticle.renderedHtml());
+        assertEquals(List.of(new TableOfContentsEntry("results", "Results", 2)),
+                publicArticle.tableOfContents());
+        verify(markdownService).render("## Results");
+    }
+
+    @Test
+    void publicSummariesUsePublishedListingAndDoNotExposeEntityState() {
+        Article article = Article.builder()
+                .id("internal-id")
+                .title("Published")
+                .slug("published")
+                .excerpt("Summary")
+                .published(true)
+                .tags(List.of("Java"))
+                .build();
+        when(articleRepository.findByPublishedTrueOrderByCreatedAtDesc())
+                .thenReturn(List.of(article));
+
+        var summaries = articleService.findPublicSummaries();
+
+        assertEquals(1, summaries.size());
+        assertEquals("published", summaries.getFirst().slug());
+        verify(articleRepository).findByPublishedTrueOrderByCreatedAtDesc();
+    }
+
+    @Test
+    void internalLookupStillReturnsDraftForAuthenticatedAdminFlows() {
+        Article draft = Article.builder()
+                .id("draft-id")
+                .title("Draft")
+                .published(false)
+                .build();
+        when(articleRepository.findById("draft-id"))
+                .thenReturn(java.util.Optional.of(draft));
+
+        assertSame(draft, articleService.findById("draft-id"));
+        verify(articleRepository).findById("draft-id");
     }
 
     @Test

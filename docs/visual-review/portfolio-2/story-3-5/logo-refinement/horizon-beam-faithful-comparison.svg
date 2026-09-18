@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1120" role="img" aria-labelledby="title desc">
+  <title id="title">Horizon–Beam faithful concept translation review</title>
+  <desc id="desc">Original Horizon–Beam concept relationship, one faithful primary candidate, its small and favicon optical variants, and the primary candidate in the Portfolio header.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#111821"/><stop offset="1" stop-color="#0d131b"/></linearGradient>
+    <linearGradient id="horizon" x1="0" x2="1"><stop stop-color="#355d9f" stop-opacity=".45"/><stop offset=".5" stop-color="#b6e5ff"/><stop offset="1" stop-color="#355d9f" stop-opacity=".45"/></linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e9f5ff" stop-opacity=".75"/><stop offset=".7" stop-color="#9bd4ff"/><stop offset="1" stop-color="#70a7ff"/></linearGradient>
+    <radialGradient id="origin"><stop stop-color="#c7efff" stop-opacity=".55"/><stop offset="1" stop-color="#70a7ff" stop-opacity="0"/></radialGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="small-blur"><feGaussianBlur stdDeviation="3"/></filter>
+    <style>
+      .display { font-family: ui-sans-serif, system-ui, sans-serif; }
+      .mono { font-family: ui-monospace, monospace; }
+      .label { fill: #70a7ff; font-size: 16px; font-weight: 800; letter-spacing: .04em; }
+      .note { fill: #aab6c5; font-size: 13px; }
+      .panel { fill: #171f2b; stroke: #2d3a4b; }
+    </style>
+  </defs>
+  <rect width="1400" height="1120" fill="url(#bg)"/>
+  <text x="64" y="62" class="display" fill="#e9eef5" font-size="26" font-weight="800">HORIZON–BEAM / FAITHFUL CONCEPT TRANSLATION</text>
+  <text x="64" y="92" class="mono" fill="#aab6c5" font-size="13">one identity · geometry first · controlled luminosity · production remains unchanged pending human acceptance</text>
+
+  <rect x="48" y="128" width="1304" height="268" rx="14" class="panel"/>
+  <text x="80" y="172" class="display label">ORIGINAL CONCEPT REFERENCE / RELATIONSHIP TO PRESERVE</text>
+  <text x="80" y="198" class="display note">broad horizon · precise beam above and below · concentrated emergence · darker receding ends · depth around the source</text>
+  <g transform="translate(700 298) scale(2.05)">
+    <ellipse cx="0" cy="8" rx="36" ry="18" fill="url(#origin)" filter="url(#blur)"/>
+    <path d="M-44 8C-23-20 23-20 44 8" fill="none" stroke="#70a7ff" stroke-width="10" opacity=".16" filter="url(#blur)"/>
+    <path d="M-44 8C-23-20 23-20 44 8" fill="none" stroke="url(#horizon)" stroke-width="6" stroke-linecap="round"/>
+    <path d="M0-36L2.3-1L0 10L-2.3-1Z" fill="url(#beam)"/>
+    <path d="M0 0L3 7L0 14L-3 7Z" fill="#f4fbff"/>
+    <path d="M-.8 11H.8L2 26H-2Z" fill="#70a7ff"/>
+  </g>
+
+  <text x="64" y="446" class="display" fill="#e9eef5" font-size="21" font-weight="800">NEW OPTICAL VARIANTS / SAME HORIZON–BEAM MARK</text>
+  <g class="display">
+    <rect x="48" y="474" width="414" height="280" rx="14" class="panel"/>
+    <rect x="493" y="474" width="414" height="280" rx="14" class="panel"/>
+    <rect x="938" y="474" width="414" height="280" rx="14" class="panel"/>
+    <text x="80" y="516" class="label">PRIMARY</text>
+    <text x="525" y="516" class="label">SMALL</text>
+    <text x="970" y="516" class="label">FAVICON</text>
+    <text x="80" y="542" class="note">full depth and localized light / large surfaces</text>
+    <text x="525" y="542" class="note">24–32px / reduced blur, preserved source</text>
+    <text x="970" y="542" class="note">approximately 16px / flat silhouette</text>
+  </g>
+  <g transform="translate(255 650) scale(1.75)">
+    <ellipse cx="0" cy="8" rx="32" ry="15" fill="url(#origin)" opacity=".8" filter="url(#blur)"/>
+    <path d="M-44 8C-23-20 23-20 44 8" fill="none" stroke="#70a7ff" stroke-width="9" opacity=".16" filter="url(#blur)"/>
+    <path d="M-44 8C-23-20 23-20 44 8" fill="none" stroke="url(#horizon)" stroke-width="6" stroke-linecap="round"/>
+    <path d="M0-36L2.3-1L0 10L-2.3-1Z" fill="url(#beam)"/><path d="M0 0L3 7L0 14L-3 7Z" fill="#f4fbff"/><path d="M-.8 11H.8L2 26H-2Z" fill="#70a7ff"/>
+  </g>
+  <g transform="translate(700 650) scale(1.9)">
+    <circle cx="0" cy="9" r="17" fill="url(#origin)"/>
+    <path d="M-25 9C-13-7 13-7 25 9" fill="none" stroke="#70a7ff" stroke-width="5.5" opacity=".2"/>
+    <path d="M-25 9C-13-7 13-7 25 9" fill="none" stroke="url(#horizon)" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M0-25L2.5-2L0 10L-2.5-2Z" fill="url(#beam)"/><path d="M0 1L3 7L0 13L-3 7Z" fill="#f4fbff"/><path d="M-.7 11H.7L1.5 19H-1.5Z" fill="#70a7ff"/>
+  </g>
+  <g transform="translate(1145 650) scale(1.75)">
+    <path d="M-25 9C-13-7 13-7 25 9" fill="none" stroke="#70a7ff" stroke-width="5" stroke-linecap="round"/>
+    <path d="M0-25L3-3L0 10L-3-3Z" fill="#e9eef5"/><path d="M-1.5 9H1.5V20H-1.5Z" fill="#70a7ff"/>
+  </g>
+
+  <rect x="48" y="794" width="1304" height="190" rx="14" class="panel"/>
+  <text x="80" y="836" class="display label">PRIMARY IN THE ACTUAL PORTFOLIO HEADER</text>
+  <text x="80" y="861" class="display note">review capture uses the real lockup, descriptor, graphite/slate shell, Typography A, and navigation</text>
+  <line x1="80" y1="900" x2="1320" y2="900" stroke="#2d3a4b"/>
+  <g transform="translate(112 934) scale(.72)">
+    <ellipse cx="0" cy="8" rx="32" ry="15" fill="url(#origin)" opacity=".8" filter="url(#small-blur)"/>
+    <path d="M-44 8C-23-20 23-20 44 8" fill="none" stroke="#70a7ff" stroke-width="9" opacity=".16"/>
+    <path d="M-44 8C-23-20 23-20 44 8" fill="none" stroke="url(#horizon)" stroke-width="6" stroke-linecap="round"/>
+    <path d="M0-36L2.3-1L0 10L-2.3-1Z" fill="url(#beam)"/><path d="M0 0L3 7L0 14L-3 7Z" fill="#f4fbff"/><path d="M-.8 11H.8L2 26H-2Z" fill="#70a7ff"/>
+  </g>
+  <text x="155" y="936" class="display" fill="#70a7ff" font-size="18" font-weight="800">Ludovic Brot</text>
+  <text x="155" y="959" class="mono" fill="#718096" font-size="12">Software &amp; AI Engineer</text>
+  <text x="1090" y="946" class="mono" fill="#aab6c5" font-size="13">Home   Work   Writing   Skills   Journey   Contact</text>
+
+  <text x="64" y="1040" class="display" fill="#e9eef5" font-size="16" font-weight="800">VISUAL CHECK</text>
+  <text x="64" y="1068" class="mono" fill="#aab6c5" font-size="13">horizon ✓   beam emergence ✓   central light ✓   controlled luminosity ✓   depth ✓   professional ✓   small-size recognition ✓   header presence ✓</text>
+  <text x="64" y="1095" class="mono" fill="#718096" font-size="12">DECISION REQUIRED: ACCEPT FAITHFUL HORIZON–BEAM  /  REQUEST REFINEMENT</text>
+</svg>

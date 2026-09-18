@@ -36,6 +36,11 @@ services:
     networks:
       - portfolio-network
 
+    healthcheck:
+      test: [ "CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand({ ping: 1 }).ok' | grep -q 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 12
 
     restart: unless-stopped
 
@@ -49,9 +54,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-
-    ports:
-      - "8080:8080"
+      mongodb:
+        condition: service_healthy
 
     environment:
       DB_URL: ${DB_URL}
@@ -65,6 +69,52 @@ services:
     volumes:
       - uploads:/app/uploads
 
+
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: portfolio-frontend
+
+    environment:
+      API_ORIGIN: http://portfolio:8080
+      PORT: 4000
+      NG_ALLOWED_HOSTS: ludovic-brot.fr,localhost,127.0.0.1
+      NG_TRUST_PROXY_HEADERS: X-FORWARDED-FOR,X-FORWARDED-PROTO
+
+    depends_on:
+      portfolio:
+        condition: service_healthy
+
+    expose:
+      - "4000"
+
+    networks:
+      - portfolio-network
+
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: portfolio-nginx
+
+    ports:
+      - "127.0.0.1:${NGINX_PORT:-8081}:80"
+
+    depends_on:
+      portfolio:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+    networks:
+      - portfolio-network
 
     restart: unless-stopped
 

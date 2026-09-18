@@ -1,6 +1,8 @@
 package com.hopefull117.portfolio.java.service;
 
 import com.hopefull117.portfolio.java.dto.ArticleViewDto;
+import com.hopefull117.portfolio.java.dto.PublicArticleDetailDto;
+import com.hopefull117.portfolio.java.dto.PublicArticleSummaryDto;
 import com.hopefull117.portfolio.java.exception.ArticlePersistenceException;
 import com.hopefull117.portfolio.java.exception.ArticleSlugConflictException;
 import com.hopefull117.portfolio.java.exception.EntityNotFoundException;
@@ -138,21 +140,62 @@ public class ArticleService {
         return articleRepository.findByPublishedTrueOrderByCreatedAtDesc();
     }
 
-    public ArticleViewDto findBySlug(String slug) {
-        Article article = articleRepository.findBySlug(slug)
-                .orElseThrow(
-                        () -> new EntityNotFoundException("Article non trouvé")
-                );
+    public List<PublicArticleSummaryDto> findPublicSummaries() {
+        return findPublished().stream()
+                .map(this::toPublicSummary)
+                .toList();
+    }
+
+    public PublicArticleDetailDto findPublicDetailBySlug(String slug) {
+        Article article = findPublishedArticleBySlug(slug);
+        var renderedMarkdown = markdownService.render(article.getContent());
+
+        return new PublicArticleDetailDto(
+                article.getTitle(),
+                article.getSlug(),
+                article.getExcerpt(),
+                article.getCoverImage(),
+                article.getTags(),
+                article.getCreatedAt(),
+                article.getUpdatedAt(),
+                renderedMarkdown.html(),
+                renderedMarkdown.tableOfContents()
+        );
+    }
+
+    public ArticleViewDto findPublicViewBySlug(String slug) {
+        Article article = findPublishedArticleBySlug(slug);
+        var renderedMarkdown = markdownService.render(article.getContent());
 
         return ArticleViewDto.builder()
                 .title(article.getTitle())
                 .slug(article.getSlug())
                 .excerpt(article.getExcerpt())
-                .content(markdownService.toHtml(article.getContent()))
+                .content(renderedMarkdown.html())
+                .tableOfContents(renderedMarkdown.tableOfContents())
                 .coverImage(article.getCoverImage())
                 .tags(article.getTags())
                 .createdAt(article.getCreatedAt())
                 .build();
+    }
+
+    private Article findPublishedArticleBySlug(String slug) {
+        return articleRepository.findBySlugAndPublishedTrue(slug)
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Article non trouvé")
+                );
+    }
+
+    private PublicArticleSummaryDto toPublicSummary(Article article) {
+        return new PublicArticleSummaryDto(
+                article.getTitle(),
+                article.getSlug(),
+                article.getExcerpt(),
+                article.getCoverImage(),
+                article.getTags(),
+                article.getCreatedAt(),
+                article.getUpdatedAt()
+        );
     }
 
     private void cleanupOwnedAsset(String coverUrl) {

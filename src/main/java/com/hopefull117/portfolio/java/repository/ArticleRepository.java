@@ -11,7 +11,7 @@ public interface ArticleRepository extends MongoRepository<Article, String> {
     List<Article> findByPublishedTrue();
 
 
-    Optional<Article> findBySlug(String slug);
+    Optional<Article> findBySlugAndPublishedTrue(String slug);
 
     boolean existsBySlug(String slug);
 

@@ -36,6 +36,8 @@ public class SecurityConfig {
                                 "/js/**",
                                 "/images/**"
                         ).permitAll()
+                        .requestMatchers("/api/public/**")
+                        .permitAll()
                         .requestMatchers("/admin/**")
                         .hasRole("ADMIN")
                         .anyRequest()

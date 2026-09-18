@@ -1,6 +1,7 @@
 package com.hopefull117.portfolio.java.controller;
 
 import com.hopefull117.portfolio.java.dto.ArticleViewDto;
+import com.hopefull117.portfolio.java.exception.EntityNotFoundException;
 import com.hopefull117.portfolio.java.service.ArticleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,13 +38,22 @@ class ArticleControllerTest {
                 .slug("titre-francais")
                 .content("Contenu")
                 .build();
-        when(articleService.findBySlug("titre-francais")).thenReturn(article);
+        when(articleService.findPublicViewBySlug("titre-francais")).thenReturn(article);
 
         mockMvc.perform(get("/blog/titre-francais"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("public/article"))
                 .andExpect(model().attribute("article", article));
 
-        verify(articleService).findBySlug("titre-francais");
+        verify(articleService).findPublicViewBySlug("titre-francais");
+    }
+
+    @Test
+    void draftSlugIsNotPubliclyReachable() throws Exception {
+        when(articleService.findPublicViewBySlug("draft"))
+                .thenThrow(new EntityNotFoundException("Article non trouvé"));
+
+        mockMvc.perform(get("/blog/draft"))
+                .andExpect(status().isNotFound());
     }
 }

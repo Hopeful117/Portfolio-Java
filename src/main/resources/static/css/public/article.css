@@ -160,6 +160,117 @@
 
 }
 
+.article-body pre {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre;
+    padding: 1rem;
+    border-radius: .75rem;
+    background: rgba(15, 23, 42, .9);
+}
+
+.article-body code {
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+.article-body table {
+    width: 100%;
+    margin: 1.5rem 0;
+    border-collapse: collapse;
+}
+
+.article-body th,
+.article-body td {
+    padding: .75rem;
+    border: 1px solid rgba(255, 255, 255, .15);
+    text-align: left;
+}
+
+.article-body th {
+    color: var(--text-primary);
+    background: rgba(15, 23, 42, .55);
+}
+
+.article-toc {
+    margin-bottom: 2rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, .45);
+}
+
+.article-toc h2 {
+    margin: 0 0 .75rem;
+    font-size: 1.15rem;
+}
+
+.article-toc ol {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+.article-toc li + li {
+    margin-top: .35rem;
+}
+
+.article-toc-level-3 {
+    margin-left: 1rem;
+}
+
+.article-body figure {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.article-body figure img {
+    max-width: 100%;
+    height: auto;
+}
+
+.article-body figcaption {
+    margin-top: .75rem;
+    color: var(--text-muted);
+    font-size: .9rem;
+}
+
+.article-callout {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    border-left: 4px solid var(--primary-hover);
+    border-radius: .5rem;
+    background: rgba(15, 23, 42, .5);
+}
+
+.article-callout-label {
+    display: block;
+    margin-bottom: .35rem;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    font-size: .78rem;
+}
+
+.article-callout-finding {
+    border-left-color: #22c55e;
+}
+
+.article-callout-warning {
+    border-left-color: #f59e0b;
+}
+
+@media (max-width: 576px) {
+    .article-body {
+        padding: 1.25rem;
+    }
+
+    .article-body table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
 .article-card {
     margin-top:10px;
     margin-bottom:10px;
