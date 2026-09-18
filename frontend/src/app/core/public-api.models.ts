@@ -31,3 +31,21 @@ export interface PublicProjectSummary {
   repositoryUrl: string | null;
   technologies: PublicTechnology[];
 }
+
+export interface PublicSkill {
+  name: string;
+  skillLevel: string;
+}
+
+export interface PublicSkillCategory {
+  category: string;
+  skills: PublicSkill[];
+}
+
+export interface PublicTimelineEntry {
+  title: string;
+  date: string;
+  description: string | null;
+  link: string | null;
+  type: string;
+}

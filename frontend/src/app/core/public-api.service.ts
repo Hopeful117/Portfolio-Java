@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PublicArticleDetail, PublicArticleSummary, PublicProjectSummary } from './public-api.models';
+import { PublicArticleDetail, PublicArticleSummary, PublicProjectSummary, PublicSkillCategory, PublicTimelineEntry } from './public-api.models';
 
 export const API_ORIGIN = new InjectionToken<string>('API_ORIGIN', {
   providedIn: 'root',
@@ -23,6 +23,14 @@ export class PublicApiService {
 
   getProjects(): Observable<PublicProjectSummary[]> {
     return this.http.get<PublicProjectSummary[]>(this.url('/projects'));
+  }
+
+  getSkills(): Observable<PublicSkillCategory[]> {
+    return this.http.get<PublicSkillCategory[]>(this.url('/skills'));
+  }
+
+  getJourney(): Observable<PublicTimelineEntry[]> {
+    return this.http.get<PublicTimelineEntry[]>(this.url('/journey'));
   }
 
   private url(path: string): string {

@@ -42,4 +42,12 @@ describe('PublicApiService', () => {
       tableOfContents: [],
     });
   });
+
+  it('requests skills and journey through the public contract', () => {
+    service.getSkills().subscribe();
+    expect(http.expectOne('/api/public/skills').request.method).toBe('GET');
+
+    service.getJourney().subscribe();
+    expect(http.expectOne('/api/public/journey').request.method).toBe('GET');
+  });
 });
