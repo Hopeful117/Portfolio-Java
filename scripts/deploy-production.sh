@@ -19,10 +19,10 @@ fi
 rollback() {
   echo "Restoring Git revision $previous_revision."
   git checkout "$previous_revision"
-  docker compose up -d --build
+  docker compose up -d --build --remove-orphans
 }
 
-if ! docker compose up -d --build; then
+if ! docker compose up -d --build --remove-orphans; then
   rollback
   exit 1
 fi

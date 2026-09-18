@@ -6,7 +6,14 @@ base_url="${SMOKE_BASE_URL:-http://127.0.0.1:8081}"
 check_contains() {
   url="$1"
   expected="$2"
-  body=$(curl --fail --silent --show-error "$base_url$url")
+  attempts=0
+  while ! body=$(curl --fail --silent --show-error "$base_url$url" 2>/dev/null); do
+    attempts=$((attempts + 1))
+    if [ "$attempts" -ge 30 ]; then
+      return 1
+    fi
+    sleep 2
+  done
   printf '%s' "$body" | grep -F "$expected" >/dev/null
 }
 
