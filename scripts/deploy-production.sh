@@ -9,10 +9,12 @@ cd "$app_root"
 mkdir -p "$state_dir"
 
 git checkout main
-previous_revision=$(git rev-parse HEAD)
+previous_revision="${PREVIOUS_REVISION:-$(git rev-parse HEAD)}"
 printf '%s\n' "$previous_revision" > "$state_dir/previous-revision"
 
-git pull --ff-only origin main
+if [ "${SKIP_PULL:-0}" != "1" ]; then
+  git pull --ff-only origin main
+fi
 
 rollback() {
   echo "Restoring Git revision $previous_revision."

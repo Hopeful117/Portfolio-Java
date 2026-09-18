@@ -72,4 +72,7 @@ jobs:
 
             cd /var/www/Portfolio-java
 
-            ./scripts/deploy-production.sh
+            git checkout main
+            previous_revision=$(git rev-parse HEAD)
+            git pull --ff-only origin main
+            PREVIOUS_REVISION="$previous_revision" SKIP_PULL=1 ./scripts/deploy-production.sh
