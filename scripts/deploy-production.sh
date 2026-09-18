@@ -2,7 +2,7 @@
 set -eu
 
 app_root="${APP_ROOT:-/var/www/Portfolio-java}"
-state_dir="${DEPLOY_STATE_DIR:-/var/lib/portfolio-java}"
+state_dir="${DEPLOY_STATE_DIR:-$app_root/.deployment-state}"
 smoke_base_url="${SMOKE_BASE_URL:-http://127.0.0.1:${NGINX_PORT:-8081}}"
 
 cd "$app_root"
