@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title>Horizon–Beam C — Signal Beam</title>
+  <defs>
+    <linearGradient id="c-horizon" x1="10" y1="42" x2="54" y2="42" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#70a7ff"/>
+      <stop offset=".5" stop-color="#b5e5ff"/>
+      <stop offset="1" stop-color="#70a7ff"/>
+    </linearGradient>
+    <linearGradient id="c-beam" x1="32" y1="10" x2="32" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f6f9ff"/>
+      <stop offset=".7" stop-color="#9bcaff"/>
+      <stop offset="1" stop-color="#70a7ff"/>
+    </linearGradient>
+  </defs>
+  <path fill="none" stroke="url(#c-horizon)" stroke-linecap="round" stroke-width="6" d="M10 42c12-13 32-13 44 0"/>
+  <path fill="#70a7ff" d="M32 9l6 13-6 13-6-13z"/>
+  <path fill="url(#c-beam)" d="M29 32h6v20h-6z"/>
+  <path fill="#d7efff" d="M32 28l3 4-3 4-3-4z"/>
+</svg>

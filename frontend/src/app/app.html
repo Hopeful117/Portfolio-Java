@@ -1,0 +1,22 @@
+<header class="site-header">
+  <a class="brand" routerLink="/" aria-label="Accueil de Ludovic Brot"><img class="brand-mark" src="brand/horizon-beam.svg" alt="" aria-hidden="true"><span class="brand-copy"><strong>Ludovic Brot</strong><small>Software &amp; AI Engineer</small></span></a>
+  <button class="menu-toggle" type="button" aria-controls="primary-navigation" [attr.aria-expanded]="menuOpen" (click)="toggleMenu()">
+    <span class="sr-only">{{ menuOpen ? 'Fermer' : 'Ouvrir' }} la navigation</span><span aria-hidden="true">{{ menuOpen ? '×' : 'Menu' }}</span>
+  </button>
+  <nav id="primary-navigation" aria-label="Navigation principale" [class.is-open]="menuOpen">
+    @for (link of navigation; track link.path) {
+      <a [routerLink]="link.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: link.path === '/' }" ariaCurrentWhenActive="page" (click)="closeMenu()">
+        {{ link.label }}
+      </a>
+    }
+  </nav>
+</header>
+
+<main class="site-main">
+  <router-outlet />
+</main>
+
+<footer class="site-footer">
+  <span><strong>Ludovic Brot</strong> / Software &amp; AI Engineer</span>
+  <a routerLink="/contact">Contact</a>
+</footer>

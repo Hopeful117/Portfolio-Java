@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title>Horizon–Beam A — Beam Light</title>
+  <defs>
+    <linearGradient id="a-horizon" x1="10" y1="42" x2="54" y2="42" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#70a7ff" stop-opacity=".82"/>
+      <stop offset=".5" stop-color="#8bbcff"/>
+      <stop offset="1" stop-color="#70a7ff" stop-opacity=".82"/>
+    </linearGradient>
+    <radialGradient id="a-origin" cx="32" cy="32" r="12" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8fd1ff" stop-opacity=".25"/>
+      <stop offset="1" stop-color="#8fd1ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="32" cy="34" r="12" fill="url(#a-origin)"/>
+  <path fill="none" stroke="url(#a-horizon)" stroke-linecap="round" stroke-width="5" d="M10 42c12-13 32-13 44 0"/>
+  <path fill="#f1f6ff" d="M32 11l4.5 11-4.5 10-4.5-10z"/>
+  <path fill="#8fc3ff" d="M30.5 31h3v21h-3z"/>
+</svg>

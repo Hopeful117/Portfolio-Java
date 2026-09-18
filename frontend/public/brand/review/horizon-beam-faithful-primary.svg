@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 128" role="img" aria-labelledby="title">
+  <title id="title">Horizon–Beam faithful primary</title>
+  <defs>
+    <linearGradient id="horizon" x1="8" y1="82" x2="152" y2="82" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#355d9f" stop-opacity=".42"/>
+      <stop offset=".23" stop-color="#70a7ff" stop-opacity=".86"/>
+      <stop offset=".5" stop-color="#b6e5ff"/>
+      <stop offset=".77" stop-color="#70a7ff" stop-opacity=".86"/>
+      <stop offset="1" stop-color="#355d9f" stop-opacity=".42"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="80" y1="12" x2="80" y2="103" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#e9f5ff" stop-opacity=".72"/>
+      <stop offset=".55" stop-color="#f6fbff"/>
+      <stop offset=".83" stop-color="#9bd4ff"/>
+      <stop offset="1" stop-color="#70a7ff" stop-opacity=".6"/>
+    </linearGradient>
+    <radialGradient id="origin" cx="80" cy="81" r="35" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c7efff" stop-opacity=".55"/>
+      <stop offset=".22" stop-color="#8ed5ff" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#70a7ff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="origin-blur" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <filter id="beam-blur" x="-200%" y="-20%" width="400%" height="140%">
+      <feGaussianBlur stdDeviation="2.2"/>
+    </filter>
+  </defs>
+  <ellipse cx="80" cy="82" rx="34" ry="18" fill="url(#origin)" opacity=".9" filter="url(#origin-blur)"/>
+  <path d="M9 82C43 37 117 37 151 82" fill="none" stroke="#70a7ff" stroke-linecap="round" stroke-width="13" opacity=".28" filter="url(#origin-blur)"/>
+  <path d="M9 82C43 37 117 37 151 82" fill="none" stroke="url(#horizon)" stroke-linecap="round" stroke-width="8"/>
+  <path d="M49 65C67 51 93 51 111 65" fill="none" stroke="#d2f2ff" stroke-linecap="round" stroke-width="2.4" opacity=".72"/>
+  <path d="M25 77C55 47 105 47 135 77" fill="none" stroke="#bdeaff" stroke-linecap="round" stroke-width="1.4" opacity=".5"/>
+  <path d="M80 12L84 69L80 87L76 69Z" fill="url(#beam)" opacity=".62" filter="url(#beam-blur)"/>
+  <path d="M80 11L82.7 69L80 87L77.3 69Z" fill="url(#beam)"/>
+  <path d="M80 75L83.5 82L80 90L76.5 82Z" fill="#f7fcff"/>
+  <path d="M79 85H81L82 104H78Z" fill="url(#beam)" opacity=".92"/>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Horizon–Beam faithful small</title>
+  <defs>
+    <linearGradient id="horizon" x1="7" y1="42" x2="57" y2="42" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4c7dce" stop-opacity=".7"/>
+      <stop offset=".5" stop-color="#b6e5ff"/>
+      <stop offset="1" stop-color="#4c7dce" stop-opacity=".7"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="32" y1="8" x2="32" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#e9f5ff" stop-opacity=".75"/>
+      <stop offset=".7" stop-color="#a4d9ff"/>
+      <stop offset="1" stop-color="#70a7ff"/>
+    </linearGradient>
+    <radialGradient id="origin" cx="32" cy="41" r="16" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#bcecff" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#70a7ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="32" cy="41" r="16" fill="url(#origin)"/>
+  <path d="M7 42C19 26 45 26 57 42" fill="none" stroke="#70a7ff" stroke-width="7" opacity=".16"/>
+  <path d="M7 42C19 26 45 26 57 42" fill="none" stroke="url(#horizon)" stroke-width="5.5" stroke-linecap="round"/>
+  <path d="M32 8L34.5 30L32 43L29.5 30Z" fill="url(#beam)"/>
+  <path d="M32 36L35 42L32 48L29 42Z" fill="#f4fbff"/>
+  <path d="M31.3 46H32.7L33.4 53H30.6Z" fill="#86c4ff"/>
+</svg>

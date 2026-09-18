@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title>Horizon–Beam B — Horizon Depth</title>
+  <defs>
+    <linearGradient id="b-horizon" x1="7" y1="39" x2="57" y2="39" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5d8fe5"/>
+      <stop offset=".5" stop-color="#9cdbff"/>
+      <stop offset="1" stop-color="#5d8fe5"/>
+    </linearGradient>
+    <linearGradient id="b-beam" x1="32" y1="12" x2="32" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f4f8ff"/>
+      <stop offset=".62" stop-color="#a5d9ff"/>
+      <stop offset="1" stop-color="#70a7ff"/>
+    </linearGradient>
+    <radialGradient id="b-origin" cx="32" cy="38" r="16" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8ed6ff" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#70a7ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="32" cy="38" r="16" fill="url(#b-origin)"/>
+  <path fill="none" stroke="url(#b-horizon)" stroke-linecap="round" stroke-width="5.5" d="M7 42c13-18 37-18 50 0"/>
+  <path fill="url(#b-beam)" d="M32 10l5 12-5 12-5-12z"/>
+  <path fill="url(#b-beam)" d="M29.25 32h5.5v20h-5.5z"/>
+</svg>

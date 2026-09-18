@@ -1,0 +1,118 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.site-header,
+.site-footer,
+.site-main {
+  width: min(var(--layout-content), calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+}
+
+.brand-copy {
+  display: grid;
+  gap: .05rem;
+}
+
+.brand-copy strong {
+  color: var(--accent);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.brand-copy small {
+  color: var(--color-subtle);
+  font: var(--type-xs) var(--font-mono);
+  letter-spacing: .02em;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: .3rem;
+}
+
+nav a,
+.site-footer a {
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding: .55rem .7rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+nav a:hover,
+nav a.active,
+.site-footer a:hover {
+  color: var(--accent);
+}
+
+nav a.active { background: var(--color-accent-soft); }
+
+.menu-toggle { display: none; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: .5rem .65rem; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+.site-main {
+  min-height: calc(100vh - 9rem);
+  padding: var(--space-6) 0 var(--space-7);
+}
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 0 2rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 680px) {
+  .site-header {
+    position: relative;
+    flex-wrap: wrap;
+  }
+
+  .menu-toggle { display: block; margin-left: auto; }
+  nav {
+    display: none;
+    width: 100%;
+    padding-top: .5rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  nav.is-open { display: flex; }
+  nav a { padding: .75rem; }
+
+  .site-main { width: min(100% - 1.5rem, var(--layout-content)); }
+  .site-footer { align-items: flex-start; flex-direction: column; width: min(100% - 1.5rem, var(--layout-content)); }
+}
