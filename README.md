@@ -77,4 +77,4 @@ SMOKE_BASE_URL=http://127.0.0.1:8081 ./scripts/smoke.sh
 - Stockage et diffusion des images de projets et couvertures d’articles
 - Authentification et autorisation de l’administration
 - CRUD des contenus du portfolio
-- Interface d’administration basée sur Thymeleaf
+- Interface d’administration Angular avec session Spring Security et protection CSRF

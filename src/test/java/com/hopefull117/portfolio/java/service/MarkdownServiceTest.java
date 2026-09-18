@@ -71,6 +71,24 @@ class MarkdownServiceTest {
     }
 
     @Test
+    void keepsTocFragmentsIdenticalToHeadingsForFrenchAndPunctuation() {
+        RenderedMarkdown rendered = markdownService.render("""
+                ## L’architecture, c’est déjà demain
+                ### API v2 / sécurité
+                ## L’architecture, c’est déjà demain
+                """);
+
+        assertTrue(rendered.html().contains("<h2 id=\"l-architecture-c-est-deja-demain\">"));
+        assertTrue(rendered.html().contains("<h3 id=\"api-v2-securite\">"));
+        assertTrue(rendered.html().contains("<h2 id=\"l-architecture-c-est-deja-demain-2\">"));
+        assertEquals(List.of(
+                new TableOfContentsEntry("l-architecture-c-est-deja-demain", "L’architecture, c’est déjà demain", 2),
+                new TableOfContentsEntry("api-v2-securite", "API v2 / sécurité", 3),
+                new TableOfContentsEntry("l-architecture-c-est-deja-demain-2", "L’architecture, c’est déjà demain", 2)),
+                rendered.tableOfContents());
+    }
+
+    @Test
     void keepsOneHeadingAvailableButTheTemplateCanHideTheSmallToc() {
         assertEquals(1, markdownService.render("## Only section").tableOfContents().size());
     }

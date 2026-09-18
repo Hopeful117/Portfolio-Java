@@ -1,3 +1,6 @@
+@if (isAdminRoute) {
+  <router-outlet />
+} @else {
 <header class="site-header">
   <a class="brand" routerLink="/" aria-label="Accueil de Ludovic Brot"><img class="brand-mark" src="brand/horizon-beam.svg" alt="" aria-hidden="true"><span class="brand-copy"><strong>Ludovic Brot</strong><small>Software &amp; AI Engineer</small></span></a>
   <button class="menu-toggle" type="button" aria-controls="primary-navigation" [attr.aria-expanded]="menuOpen" (click)="toggleMenu()">
@@ -20,3 +23,4 @@
   <span><strong>Ludovic Brot</strong> / Software &amp; AI Engineer</span>
   <a routerLink="/contact">Contact</a>
 </footer>
+}

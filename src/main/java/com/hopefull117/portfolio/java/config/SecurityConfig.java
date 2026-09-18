@@ -9,8 +9,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.http.HttpStatus;
+import jakarta.servlet.http.HttpServletResponse;
 
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -38,17 +43,35 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/api/public/**")
                         .permitAll()
+                        .requestMatchers("/api/auth/**")
+                        .permitAll()
+                        .requestMatchers("/api/admin/**")
+                        .hasRole("ADMIN")
                         .requestMatchers("/admin/**")
                         .hasRole("ADMIN")
                         .anyRequest()
                         .permitAll()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/admin/dashboard",true)
+                        .loginProcessingUrl("/api/auth/login")
+                        .successHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_NO_CONTENT))
+                        .failureHandler((request, response, exception) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                         .permitAll()
                 )
-                .logout(withDefaults());
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout")
+                        .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_NO_CONTENT))
+                        .permitAll()
+                )
+                .exceptionHandling(exceptions -> exceptions
+                        .defaultAuthenticationEntryPointFor(
+                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
+                                (RequestMatcher) request -> request.getServletPath().startsWith("/api/admin/"))
+                )
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
+                );
 
         return http.build();
     }

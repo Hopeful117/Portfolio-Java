@@ -6,7 +6,7 @@ import { PublicApiService } from '../core/public-api.service';
 
 @Component({
   standalone: true,
-  imports: [AsyncPipe, DatePipe, RouterLink],
+   imports: [AsyncPipe, DatePipe, RouterLink],
   template: `
     @if (article$ | async; as article) {
       @if (article) {
@@ -16,11 +16,11 @@ import { PublicApiService } from '../core/public-api.service';
             <header class="article-header"><p class="eyebrow">Note technique / {{ article.createdAt | date: 'mediumDate' }}</p><h1>{{ article.title }}</h1><p class="excerpt">{{ article.excerpt || 'Une note technique issue de la pratique d’ingénierie de Ludovic Brot.' }}</p><div class="meta"><span>Publié le {{ article.createdAt | date: 'mediumDate' }}</span>@if (article.updatedAt !== article.createdAt) {<span>Mis à jour le {{ article.updatedAt | date: 'mediumDate' }}</span>}</div><div class="tags" aria-label="Étiquettes de l’article">@for (tag of article.tags; track tag) {<span>#{{ tag }}</span>}</div></header>
             @if (article.coverImage) {<figure class="cover"><img [src]="article.coverImage" [alt]="article.title + ' — illustration'" /></figure>}
             @if (article.tableOfContents.length) {
-              <details class="toc mobile-toc"><summary>Dans cet article</summary><nav aria-label="Sommaire de l’article">@for (entry of article.tableOfContents; track entry.id) { <a [class.level-3]="entry.level === 3" [href]="'#' + entry.id">{{ entry.label }}</a> }</nav></details>
+              <details class="toc mobile-toc"><summary>Dans cet article</summary><nav aria-label="Sommaire de l’article">@for (entry of article.tableOfContents; track entry.id) { <a [routerLink]="[]" [fragment]="entry.id" [class.level-3]="entry.level === 3">{{ entry.label }}</a> }</nav></details>
             }
             <div class="article-body" [innerHTML]="article.renderedHtml"></div>
           </div>
-          @if (article.tableOfContents.length) {<aside class="toc-sidebar"><nav class="toc" aria-label="Sommaire de l’article"><strong>Dans cet article</strong>@for (entry of article.tableOfContents; track entry.id) { <a [class.level-3]="entry.level === 3" [href]="'#' + entry.id">{{ entry.label }}</a> }</nav></aside>}
+          @if (article.tableOfContents.length) {<aside class="toc-sidebar"><nav class="toc" aria-label="Sommaire de l’article"><strong>Dans cet article</strong>@for (entry of article.tableOfContents; track entry.id) { <a [routerLink]="[]" [fragment]="entry.id" [class.level-3]="entry.level === 3">{{ entry.label }}</a> }</nav></aside>}
         </article>
       } @else { <section class="status"><h1>Article introuvable</h1><a routerLink="/blog">Retour aux articles</a></section> }
     } @else { <p class="status">Chargement de l’article…</p> }

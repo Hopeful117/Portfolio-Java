@@ -18,9 +18,13 @@ check_contains() {
 }
 
 check_contains / "Ludovic Brot"
+check_contains /contact "Contact"
+check_contains /parcours "Parcours"
 check_contains /skills "Compétences"
 check_contains /blog "Articles"
 check_contains /api/public/articles '['
 check_contains /api/public/projects '['
+check_contains /api/public/skills '['
+check_contains /api/public/journey '['
 
-echo "Production smoke checks passed: homepage, nested route, articles, public API."
+echo "Production smoke checks passed: public routes, articles, profile APIs, and public content APIs."

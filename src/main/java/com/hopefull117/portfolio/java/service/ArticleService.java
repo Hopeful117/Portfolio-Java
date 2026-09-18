@@ -57,7 +57,7 @@ public class ArticleService {
         article.setSlug(slugCandidate(baseSlug, candidateNumber));
 
         String coverUrl = null;
-        if (!file.isEmpty()) {
+        if (file != null && !file.isEmpty()) {
             ProcessedImage processed = articleImageProcessor.process(file);
             coverUrl = fileStorageService.saveArticleWebP(processed.data());
             article.setCoverImage(coverUrl);
@@ -97,7 +97,7 @@ public class ArticleService {
         String oldCover = existingArticle.getCoverImage();
 
         String newCoverUrl = null;
-        if (!file.isEmpty()) {
+        if (file != null && !file.isEmpty()) {
             ProcessedImage processed = articleImageProcessor.process(file);
             newCoverUrl = fileStorageService.saveArticleWebP(processed.data());
             existingArticle.setCoverImage(newCoverUrl);

@@ -39,7 +39,7 @@ public class ProjectService extends AbstractCrudService<Project> {
                 technologieService.getAllById(dto.getTechnologies())
         );
 
-        if (!dto.getImage().isEmpty()) {
+        if (dto.getImage() != null && !dto.getImage().isEmpty()) {
             project.setImagePath(
                     fileStorageService.save(dto.getImage())
             );
@@ -83,7 +83,6 @@ public class ProjectService extends AbstractCrudService<Project> {
 
 
     }
-
 
 
 

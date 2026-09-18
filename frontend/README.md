@@ -1,6 +1,6 @@
 # Portfolio 2.0 frontend
 
-This is the standalone Angular public application foundation. It consumes Spring's read-only `/api/public/**` contract and does not replace the existing Thymeleaf routes or admin application.
+This is the Angular SSR application for the public portfolio and the authenticated administration workspace. Public content is read through `/api/public/**`; the admin workspace uses the session-protected `/api/auth/**` and `/api/admin/**` contracts with Angular-compatible CSRF protection.
 
 ## Development
 
