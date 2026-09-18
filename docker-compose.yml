@@ -82,7 +82,7 @@ services:
     environment:
       API_ORIGIN: http://portfolio:8080
       PORT: 4000
-      NG_ALLOWED_HOSTS: ludovic-brot.fr,localhost,127.0.0.1
+      NG_ALLOWED_HOSTS: ludovic-brot.fr,www.ludovic-brot.fr,localhost,127.0.0.1
       NG_TRUST_PROXY_HEADERS: X-FORWARDED-FOR,X-FORWARDED-PROTO
 
     depends_on:
