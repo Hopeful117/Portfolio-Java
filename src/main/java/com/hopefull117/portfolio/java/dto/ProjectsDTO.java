@@ -28,4 +28,6 @@ public class ProjectsDTO {
 
     @NotBlank
     private String githubUrl;
+
+    private boolean featured;
 }

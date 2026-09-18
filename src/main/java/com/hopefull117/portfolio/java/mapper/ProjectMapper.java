@@ -25,6 +25,7 @@ public class ProjectMapper {
         project.setTitle(dto.getTitle());
         project.setDescription(dto.getDescription());
         project.setGithubUrl(dto.getGithubUrl());
+        project.setFeatured(dto.isFeatured());
 
         return project;
     }
@@ -35,6 +36,7 @@ public class ProjectMapper {
         dto.setTitle(project.getTitle());
         dto.setDescription(project.getDescription());
         dto.setGithubUrl(project.getGithubUrl());
+        dto.setFeatured(project.isFeatured());
 
         return dto;
     }
@@ -45,6 +47,7 @@ public class ProjectMapper {
         dto.setDescription(project.getDescription());
         dto.setImagePath(project.getImagePath());
         dto.setGithubUrl(project.getGithubUrl());
+        dto.setFeatured(project.isFeatured());
         dto.setTechnologyIds(
                 project.getTechnologies()
                         .stream()

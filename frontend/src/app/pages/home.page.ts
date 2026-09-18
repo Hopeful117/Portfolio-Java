@@ -82,7 +82,10 @@ import { PublicApiService } from '../core/public-api.service';
 export class HomePage {
   private readonly api = inject(PublicApiService);
   protected readonly view$ = combineLatest({
-    projects: this.api.getProjects().pipe(catchError(() => of([]))),
+    projects: this.api.getProjects().pipe(map((projects) => {
+      const featured = projects.filter((project) => project.featured);
+      return featured.length ? featured : projects;
+    }), catchError(() => of([]))),
     articles: this.api.getArticles().pipe(catchError(() => of([]))),
   }).pipe(startWith({ projects: [], articles: [] }), shareReplay(1));
 }

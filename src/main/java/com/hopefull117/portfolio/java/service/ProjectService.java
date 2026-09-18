@@ -61,6 +61,7 @@ public class ProjectService extends AbstractCrudService<Project> {
         project.setTitle(dto.getTitle());
         project.setDescription(dto.getDescription());
         project.setGithubUrl(dto.getGithubUrl());
+        project.setFeatured(dto.isFeatured());
 
         List<Technology> technologies =
                 technologieService.getAllById(dto.getTechnologyIds());
@@ -83,7 +84,6 @@ public class ProjectService extends AbstractCrudService<Project> {
 
 
     }
-
 
 
 

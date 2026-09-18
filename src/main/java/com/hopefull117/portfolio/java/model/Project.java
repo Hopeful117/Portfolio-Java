@@ -32,4 +32,6 @@ public class Project implements ModelEntity {
     private String githubUrl;
 
     private String imagePath;
+
+    private boolean featured;
 }

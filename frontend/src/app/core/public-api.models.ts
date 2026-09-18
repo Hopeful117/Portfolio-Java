@@ -29,6 +29,7 @@ export interface PublicProjectSummary {
   description: string | null;
   imageUrl: string | null;
   repositoryUrl: string | null;
+  featured: boolean;
   technologies: PublicTechnology[];
 }
 

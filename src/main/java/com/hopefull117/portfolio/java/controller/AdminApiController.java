@@ -38,25 +38,25 @@ public class AdminApiController {
 
     @PostMapping(value = "/projects", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createProject(@Valid @RequestBody AdminProjectRequest request) throws IOException {
-        projectService.create(new ProjectsDTO(request.title(), request.description(), request.technologyIds() == null ? List.of() : request.technologyIds(), null, request.githubUrl()));
+        projectService.create(new ProjectsDTO(request.title(), request.description(), request.technologyIds() == null ? List.of() : request.technologyIds(), null, request.githubUrl(), Boolean.TRUE.equals(request.featured())));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping(value = "/projects", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> createProjectWithImage(@RequestPart("data") @Valid AdminProjectRequest request, @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
-        projectService.create(new ProjectsDTO(request.title(), request.description(), request.technologyIds() == null ? List.of() : request.technologyIds(), image, request.githubUrl()));
+        projectService.create(new ProjectsDTO(request.title(), request.description(), request.technologyIds() == null ? List.of() : request.technologyIds(), image, request.githubUrl(), Boolean.TRUE.equals(request.featured())));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping(value = "/projects/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateProject(@PathVariable Long id, @Valid @RequestBody AdminProjectRequest request) throws IOException {
-        projectService.updateFromDto(new ProjectEditDTO(id, request.title(), request.description(), request.githubUrl(), null, null, request.technologyIds() == null ? List.of() : request.technologyIds()));
+        projectService.updateFromDto(new ProjectEditDTO(id, request.title(), request.description(), request.githubUrl(), null, null, request.technologyIds() == null ? List.of() : request.technologyIds(), Boolean.TRUE.equals(request.featured())));
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/projects/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateProjectWithImage(@PathVariable Long id, @RequestPart("data") @Valid AdminProjectRequest request, @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
-        projectService.updateFromDto(new ProjectEditDTO(id, request.title(), request.description(), request.githubUrl(), null, image, request.technologyIds() == null ? List.of() : request.technologyIds()));
+        projectService.updateFromDto(new ProjectEditDTO(id, request.title(), request.description(), request.githubUrl(), null, image, request.technologyIds() == null ? List.of() : request.technologyIds(), Boolean.TRUE.equals(request.featured())));
         return ResponseEntity.noContent().build();
     }
 
@@ -183,7 +183,7 @@ public class AdminApiController {
     }
 
     private AdminProjectDto projectDto(Project project) {
-        return new AdminProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getGithubUrl(), project.getImagePath(), project.getTechnologies() == null ? List.of() : project.getTechnologies().stream().map(this::technologyDto).toList());
+        return new AdminProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getGithubUrl(), project.getImagePath(), project.isFeatured(), project.getTechnologies() == null ? List.of() : project.getTechnologies().stream().map(this::technologyDto).toList());
     }
 
     private AdminTechnologyDto technologyDto(Technology technology) {

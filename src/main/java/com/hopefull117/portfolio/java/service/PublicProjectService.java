@@ -34,6 +34,7 @@ public class PublicProjectService {
                 project.getDescription(),
                 project.getImagePath(),
                 project.getGithubUrl(),
+                project.isFeatured(),
                 technologies
         );
     }

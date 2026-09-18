@@ -1,8 +1,10 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { AsyncPipe, DatePipe, isPlatformBrowser } from '@angular/common';
+import { AfterViewChecked, Component, DestroyRef, ElementRef, inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { catchError, map, of, shareReplay, switchMap } from 'rxjs';
+import { catchError, filter, map, of, shareReplay, switchMap, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PublicApiService } from '../core/public-api.service';
+import { PublicArticleDetail } from '../core/public-api.models';
 
 @Component({
   standalone: true,
@@ -16,11 +18,11 @@ import { PublicApiService } from '../core/public-api.service';
             <header class="article-header"><p class="eyebrow">Note technique / {{ article.createdAt | date: 'mediumDate' }}</p><h1>{{ article.title }}</h1><p class="excerpt">{{ article.excerpt || 'Une note technique issue de la pratique d’ingénierie de Ludovic Brot.' }}</p><div class="meta"><span>Publié le {{ article.createdAt | date: 'mediumDate' }}</span>@if (article.updatedAt !== article.createdAt) {<span>Mis à jour le {{ article.updatedAt | date: 'mediumDate' }}</span>}</div><div class="tags" aria-label="Étiquettes de l’article">@for (tag of article.tags; track tag) {<span>#{{ tag }}</span>}</div></header>
             @if (article.coverImage) {<figure class="cover"><img [src]="article.coverImage" [alt]="article.title + ' — illustration'" /></figure>}
             @if (article.tableOfContents.length) {
-              <details class="toc mobile-toc"><summary>Dans cet article</summary><nav aria-label="Sommaire de l’article">@for (entry of article.tableOfContents; track entry.id) { <a [routerLink]="[]" [fragment]="entry.id" [class.level-3]="entry.level === 3">{{ entry.label }}</a> }</nav></details>
+               <details class="toc mobile-toc"><summary>Dans cet article</summary><nav aria-label="Sommaire de l’article">@for (entry of article.tableOfContents; track entry.id) { <a [routerLink]="[]" [fragment]="entry.id" [class.level-3]="entry.level === 3">{{ entry.label }}</a> }</nav></details>
             }
-            <div class="article-body" [innerHTML]="article.renderedHtml"></div>
+             <div #articleBody class="article-body" [innerHTML]="article.renderedHtml"></div>
           </div>
-          @if (article.tableOfContents.length) {<aside class="toc-sidebar"><nav class="toc" aria-label="Sommaire de l’article"><strong>Dans cet article</strong>@for (entry of article.tableOfContents; track entry.id) { <a [routerLink]="[]" [fragment]="entry.id" [class.level-3]="entry.level === 3">{{ entry.label }}</a> }</nav></aside>}
+           @if (article.tableOfContents.length) {<aside class="toc-sidebar"><nav class="toc" aria-label="Sommaire de l’article"><strong>Dans cet article</strong>@for (entry of article.tableOfContents; track entry.id) { <a [routerLink]="[]" [fragment]="entry.id" [class.level-3]="entry.level === 3">{{ entry.label }}</a> }</nav></aside>}
         </article>
       } @else { <section class="status"><h1>Article introuvable</h1><a routerLink="/blog">Retour aux articles</a></section> }
     } @else { <p class="status">Chargement de l’article…</p> }
@@ -64,12 +66,55 @@ import { PublicApiService } from '../core/public-api.service';
     @media (max-width: 880px) { .article-layout { display: block; max-width: var(--layout-reading); margin-inline: auto; } .toc-sidebar { display: none; } .mobile-toc { display: block; margin: 2rem 0 0; } .mobile-toc nav { display: grid; } }
   `,
 })
-export class ArticlePage {
+export class ArticlePage implements AfterViewChecked {
   private readonly route = inject(ActivatedRoute);
   private readonly api = inject(PublicApiService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly platformId = inject(PLATFORM_ID);
+  @ViewChild('articleBody') private articleBody?: ElementRef<HTMLElement>;
+  private currentArticle: PublicArticleDetail | null = null;
+  private appliedHeadingKey = '';
+
+  constructor() {
+    this.route.fragment.pipe(
+      filter((fragment): fragment is string => Boolean(fragment)),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe((fragment) => {
+      setTimeout(() => this.scrollToFragment(fragment));
+    });
+  }
   protected readonly article$ = this.route.paramMap.pipe(
     map((params) => params.get('slug') ?? ''),
     switchMap((slug) => this.api.getArticle(slug).pipe(catchError(() => of(null)))),
+    tap((article) => {
+      this.currentArticle = article;
+    }),
     shareReplay(1),
   );
+
+  ngAfterViewChecked(): void {
+    const article = this.currentArticle;
+    const body = this.articleBody?.nativeElement;
+    if (!article || !body) return;
+
+    const headingKey = `${article.slug}:${article.updatedAt}`;
+    if (this.appliedHeadingKey === headingKey) return;
+
+    const headings = Array.from(body.querySelectorAll<HTMLElement>('h2, h3'));
+    article.tableOfContents.forEach((entry, index) => {
+      const heading = headings[index];
+      if (heading) heading.id = entry.id;
+    });
+    this.appliedHeadingKey = headingKey;
+
+    if (this.route.snapshot.fragment) {
+      this.scrollToFragment(this.route.snapshot.fragment);
+    }
+  }
+
+  private scrollToFragment(fragment: string): void {
+    if (isPlatformBrowser(this.platformId)) {
+      document.getElementById(fragment)?.scrollIntoView({ block: 'start' });
+    }
+  }
 }

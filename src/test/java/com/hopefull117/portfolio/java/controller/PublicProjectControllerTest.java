@@ -35,7 +35,7 @@ class PublicProjectControllerTest {
     void returnsBoundedProjectSummaryProjection() throws Exception {
         when(projectService.findPublicSummaries()).thenReturn(List.of(
                 new PublicProjectSummaryDto(
-                        "HopeCodeSec", "Public system", "/project.webp", "https://github.com/example",
+                        "HopeCodeSec", "Public system", "/project.webp", "https://github.com/example", true,
                         List.of(new PublicTechnologyDto("Java", "/icons/java.svg")))));
 
         mockMvc.perform(get("/api/public/projects"))

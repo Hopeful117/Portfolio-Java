@@ -22,4 +22,6 @@ public class ProjectEditDTO {
     private MultipartFile image;
 
     private List<Long> technologyIds;
+
+    private boolean featured;
 }

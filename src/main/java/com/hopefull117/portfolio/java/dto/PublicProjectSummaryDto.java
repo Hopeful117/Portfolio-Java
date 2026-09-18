@@ -7,6 +7,7 @@ public record PublicProjectSummaryDto(
         String description,
         String imageUrl,
         String repositoryUrl,
+        boolean featured,
         List<PublicTechnologyDto> technologies
 ) {
     public PublicProjectSummaryDto {
