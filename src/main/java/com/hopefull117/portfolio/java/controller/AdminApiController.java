@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -154,6 +155,16 @@ public class AdminApiController {
         return articleService.getAll().stream().map(this::articleDto).toList();
     }
 
+    @PostMapping(value = "/articles/illustrations", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> uploadArticleIllustration(@RequestPart("image") MultipartFile image) throws IOException {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ArticleIllustrationDto(articleService.uploadIllustration(image)));
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.badRequest().body(Map.of("message", exception.getMessage()));
+        }
+    }
+
     @PostMapping(value = "/articles", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AdminArticleDto> createArticle(@Valid @RequestBody AdminArticleRequest request) throws IOException {
         return ResponseEntity.status(HttpStatus.CREATED).body(articleDto(articleService.create(article(request), null)));
@@ -180,6 +191,12 @@ public class AdminApiController {
     public ResponseEntity<Void> deleteArticle(@PathVariable String id) {
         articleService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/articles/{id}/cover")
+    public ResponseEntity<AdminArticleDto> removeArticleCover(@PathVariable String id) {
+        articleService.removeCover(id);
+        return ResponseEntity.ok(articleDto(articleService.findById(id)));
     }
 
     private AdminProjectDto projectDto(Project project) {

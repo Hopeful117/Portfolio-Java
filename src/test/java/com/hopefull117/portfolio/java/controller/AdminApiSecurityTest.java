@@ -15,6 +15,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -35,6 +37,14 @@ class AdminApiSecurityTest {
     @Test
     void rejectsAnonymousAdminApiAccessWithUnauthorized() throws Exception {
         mockMvc.perform(get("/api/admin/summary"))
+                .andExpect(status().isUnauthorized());
+
+        mockMvc.perform(delete("/api/admin/articles/article-id/cover").with(csrf()))
+                .andExpect(status().isUnauthorized());
+
+        mockMvc.perform(multipart("/api/admin/articles/illustrations")
+                        .file("image", new byte[]{1})
+                        .with(csrf()))
                 .andExpect(status().isUnauthorized());
     }
 

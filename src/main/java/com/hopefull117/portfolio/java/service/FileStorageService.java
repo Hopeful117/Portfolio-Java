@@ -14,9 +14,11 @@ import java.util.UUID;
 @Slf4j
 public class FileStorageService {
     private static final String ARTICLE_URL_PREFIX = "/uploads/articles/";
+    private static final String ARTICLE_ILLUSTRATION_URL_PREFIX = "/uploads/articles/illustrations/";
 
     private final Path root;
     private final Path articleRoot;
+    private final Path articleIllustrationRoot;
 
     public FileStorageService() {
         this(Paths.get("uploads"));
@@ -25,6 +27,7 @@ public class FileStorageService {
     FileStorageService(Path uploadsRoot) {
         this.root = uploadsRoot.resolve("projects");
         this.articleRoot = uploadsRoot.resolve("articles");
+        this.articleIllustrationRoot = articleRoot.resolve("illustrations");
     }
 
     public String save(MultipartFile file) throws IOException {
@@ -46,6 +49,15 @@ public class FileStorageService {
         Files.write(articleRoot.resolve(filename), data);
 
         return ARTICLE_URL_PREFIX + filename;
+    }
+
+    public String saveArticleIllustrationWebP(byte[] data) throws IOException {
+        Files.createDirectories(articleIllustrationRoot);
+
+        String filename = UUID.randomUUID() + ".webp";
+        Files.write(articleIllustrationRoot.resolve(filename), data);
+
+        return ARTICLE_ILLUSTRATION_URL_PREFIX + filename;
     }
 
     public void deleteArticleAsset(String publicPath) {
