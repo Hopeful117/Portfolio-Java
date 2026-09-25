@@ -117,6 +117,16 @@ class MarkdownServiceTest {
     }
 
     @Test
+    void rendersIllustrationWithoutCaptionAsFigureWithoutFigcaption() {
+        String html = markdownService.toHtml("![Architecture](/uploads/articles/illustrations/abc.webp)");
+
+        assertTrue(html.contains("<figure>"));
+        assertTrue(html.contains("/uploads/articles/illustrations/abc.webp"));
+        assertTrue(html.contains("alt=\"Architecture\""));
+        assertFalse(html.contains("<figcaption>"));
+    }
+
+    @Test
     void rendersOnlySupportedCalloutsAsControlledAsideMarkup() {
         String html = markdownService.toHtml("""
                 > [!FINDING]

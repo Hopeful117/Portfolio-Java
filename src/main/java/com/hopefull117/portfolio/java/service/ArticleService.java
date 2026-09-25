@@ -43,6 +43,11 @@ public class ArticleService {
                 );
     }
 
+    public String uploadIllustration(MultipartFile file) throws IOException {
+        ProcessedImage processed = articleImageProcessor.process(file);
+        return fileStorageService.saveArticleIllustrationWebP(processed.data());
+    }
+
     public Article create(Article article, MultipartFile file) throws IOException {
         String baseSlug = slugGenerator.generate(article.getTitle());
         int candidateNumber;
@@ -120,6 +125,22 @@ public class ArticleService {
         if (newCoverUrl != null && fileStorageService.isArticleOwned(oldCover)) {
             fileStorageService.deleteArticleAsset(oldCover);
         }
+    }
+
+    public void removeCover(String id) {
+        Article article = findById(id);
+        String oldCover = article.getCoverImage();
+        article.setCoverImage(null);
+        article.setUpdatedAt(Instant.now());
+
+        try {
+            articleRepository.save(article);
+        } catch (DataAccessException exception) {
+            article.setCoverImage(oldCover);
+            throw new ArticlePersistenceException("Impossible d'enregistrer l'article pour le moment", exception);
+        }
+
+        cleanupOwnedAsset(oldCover);
     }
 
     public void deleteById(String id) {

@@ -155,6 +155,22 @@ class ArticleServiceTest {
     }
 
     @Test
+    void uploadIllustrationProcessesAndStoresWebPWithoutArticlePersistence() throws IOException {
+        MockMultipartFile image = new MockMultipartFile("image", "illustration.png", "image/png", new byte[]{1, 2, 3});
+        ProcessedImage processed = new ProcessedImage(new byte[]{4, 5, 6}, 800, 600);
+        when(articleImageProcessor.process(image)).thenReturn(processed);
+        when(fileStorageService.saveArticleIllustrationWebP(processed.data()))
+                .thenReturn("/uploads/articles/illustrations/abc.webp");
+
+        String url = articleService.uploadIllustration(image);
+
+        assertEquals("/uploads/articles/illustrations/abc.webp", url);
+        verify(articleImageProcessor).process(image);
+        verify(fileStorageService).saveArticleIllustrationWebP(processed.data());
+        verify(articleRepository, never()).save(any(Article.class));
+    }
+
+    @Test
     void createWithImageCleansUpOnPersistenceFailure() throws IOException {
         Article article = article("Cover image");
         MockMultipartFile image = new MockMultipartFile("image", "cover.png", "image/png", new byte[]{1});
@@ -339,6 +355,54 @@ class ArticleServiceTest {
         articleService.deleteById("article-id");
 
         verify(articleRepository).deleteById("article-id");
+        verify(fileStorageService, never()).deleteArticleAsset(any());
+    }
+
+    @Test
+    void removeCoverClearsReferenceBeforeCleaningOwnedAsset() {
+        Article article = Article.builder()
+                .id("article-id")
+                .coverImage("/uploads/articles/cover.webp")
+                .build();
+        when(articleRepository.findById("article-id")).thenReturn(java.util.Optional.of(article));
+        when(fileStorageService.isArticleOwned("/uploads/articles/cover.webp")).thenReturn(true);
+        when(articleRepository.save(article)).thenReturn(article);
+
+        articleService.removeCover("article-id");
+
+        assertNull(article.getCoverImage());
+        verify(articleRepository).save(article);
+        verify(fileStorageService).deleteArticleAsset("/uploads/articles/cover.webp");
+    }
+
+    @Test
+    void removeCoverDoesNotDeleteLegacyAsset() {
+        Article article = Article.builder()
+                .id("article-id")
+                .coverImage("/uploads/projects/legacy.png")
+                .build();
+        when(articleRepository.findById("article-id")).thenReturn(java.util.Optional.of(article));
+        when(fileStorageService.isArticleOwned("/uploads/projects/legacy.png")).thenReturn(false);
+        when(articleRepository.save(article)).thenReturn(article);
+
+        articleService.removeCover("article-id");
+
+        assertNull(article.getCoverImage());
+        verify(fileStorageService, never()).deleteArticleAsset(any());
+    }
+
+    @Test
+    void removeCoverPersistenceFailurePreservesReferenceAndFile() {
+        Article article = Article.builder()
+                .id("article-id")
+                .coverImage("/uploads/articles/cover.webp")
+                .build();
+        when(articleRepository.findById("article-id")).thenReturn(java.util.Optional.of(article));
+        when(articleRepository.save(article)).thenThrow(new DataAccessResourceFailureException("mongo down"));
+
+        assertThrows(ArticlePersistenceException.class, () -> articleService.removeCover("article-id"));
+
+        assertEquals("/uploads/articles/cover.webp", article.getCoverImage());
         verify(fileStorageService, never()).deleteArticleAsset(any());
     }
 

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AdminArticle, AdminProject, AdminSession, AdminSkill, AdminSummary, AdminTechnology, AdminTimeline } from './admin-api.models';
+import { AdminArticle, AdminProject, AdminSession, AdminSkill, AdminSummary, AdminTechnology, AdminTimeline, ArticleIllustration } from './admin-api.models';
 
 @Injectable({ providedIn: 'root' })
 export class AdminApiService {
@@ -28,8 +28,10 @@ export class AdminApiService {
   updateTimeline(id: number, value: object) { return this.http.put<AdminTimeline>(`/api/admin/timeline/${id}`, value); }
   deleteTimeline(id: number) { return this.http.delete<void>(`/api/admin/timeline/${id}`); }
   articles() { return this.http.get<AdminArticle[]>('/api/admin/articles'); }
+  uploadArticleIllustration(image: File) { const form = new FormData(); form.append('image', image); return this.http.post<ArticleIllustration>('/api/admin/articles/illustrations', form); }
   createArticle(value: object, image?: File | null) { return image ? this.http.post<AdminArticle>('/api/admin/articles', this.multipart(value, image)) : this.http.post<AdminArticle>('/api/admin/articles', value); }
   updateArticle(id: string, value: object, image?: File | null) { return image ? this.http.put<AdminArticle>(`/api/admin/articles/${id}`, this.multipart(value, image)) : this.http.put<AdminArticle>(`/api/admin/articles/${id}`, value); }
+  removeArticleCover(id: string) { return this.http.delete<AdminArticle>(`/api/admin/articles/${id}/cover`); }
   deleteArticle(id: string) { return this.http.delete<void>(`/api/admin/articles/${id}`); }
   private multipart(value: object, image: File): FormData { const form = new FormData(); form.append('data', new Blob([JSON.stringify(value)], { type: 'application/json' })); form.append('image', image); return form; }
 }

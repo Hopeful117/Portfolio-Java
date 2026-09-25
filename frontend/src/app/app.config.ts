@@ -1,5 +1,5 @@
 import '@angular/common/locales/global/fr';
-import { provideHttpClient, withFetch, withXsrfConfiguration } from '@angular/common/http';
+import { provideHttpClient, withXsrfConfiguration } from '@angular/common/http';
 import { provideBrowserGlobalErrorListeners, provideZoneChangeDetection, LOCALE_ID } from '@angular/core';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
@@ -14,7 +14,7 @@ export const appConfig = {
       anchorScrolling: 'enabled',
       scrollPositionRestoration: 'enabled',
     })),
-    provideHttpClient(withFetch(), withXsrfConfiguration({ cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN' })),
+    provideHttpClient(withXsrfConfiguration({ cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN' })),
     provideClientHydration(withEventReplay()),
   ],
 };

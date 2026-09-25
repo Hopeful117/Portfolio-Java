@@ -28,4 +28,43 @@ describe('AdminApiService', () => {
     expect(request.request.method).toBe('DELETE');
     request.flush(null);
   });
+
+  it('uses JSON for metadata-only article updates', () => {
+    service.updateArticle('article-1', { title: 'Updated' }).subscribe();
+
+    const request = http.expectOne('/api/admin/articles/article-1');
+    expect(request.request.method).toBe('PUT');
+    expect(request.request.body).toEqual({ title: 'Updated' });
+    request.flush({});
+  });
+
+  it('uses multipart data when an article cover is selected', () => {
+    const image = new File(['image'], 'cover.png', { type: 'image/png' });
+    service.createArticle({ title: 'With cover' }, image).subscribe();
+
+    const request = http.expectOne('/api/admin/articles');
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body instanceof FormData).toBeTrue();
+    expect((request.request.body as FormData).get('image')).toBe(image);
+    request.flush({});
+  });
+
+  it('uploads an inline article illustration as multipart data', () => {
+    const image = new File(['image'], 'diagram.png', { type: 'image/png' });
+    service.uploadArticleIllustration(image).subscribe((result) => expect(result.url).toContain('/uploads/articles/illustrations/'));
+
+    const request = http.expectOne('/api/admin/articles/illustrations');
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body instanceof FormData).toBeTrue();
+    expect((request.request.body as FormData).get('image')).toBe(image);
+    request.flush({ url: '/uploads/articles/illustrations/abc.webp' });
+  });
+
+  it('removes an article cover through its dedicated endpoint', () => {
+    service.removeArticleCover('article-1').subscribe();
+
+    const request = http.expectOne('/api/admin/articles/article-1/cover');
+    expect(request.request.method).toBe('DELETE');
+    request.flush({ coverImage: null });
+  });
 });

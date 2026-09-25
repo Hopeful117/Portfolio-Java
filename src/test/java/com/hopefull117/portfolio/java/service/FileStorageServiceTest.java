@@ -66,6 +66,19 @@ class FileStorageServiceTest {
     }
 
     @Test
+    void saveArticleIllustrationWebPCreatesFileInIllustrationsDirectory() throws IOException {
+        byte[] webpData = "fake-illustration-webp".getBytes();
+
+        String url = service.saveArticleIllustrationWebP(webpData);
+
+        assertTrue(url.startsWith("/uploads/articles/illustrations/"));
+        assertTrue(url.endsWith(".webp"));
+        Path storedFile = storedFile(url);
+        assertTrue(Files.exists(storedFile));
+        assertArrayEquals(webpData, Files.readAllBytes(storedFile));
+    }
+
+    @Test
     void deleteArticleAssetRemovesOwnedFile() throws IOException {
         byte[] data = "test".getBytes();
         String url = service.saveArticleWebP(data);
