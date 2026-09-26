@@ -77,7 +77,24 @@ button:focus-visible, a:focus-visible {
 }
 
 ::selection { color: var(--surface-background); background: var(--accent); }
+.article-body img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-left: 0;
+  border-radius: var(--radius-sm);
+}
 
+.article-body figure {
+  margin: 2rem 0;
+}
+
+.article-body figcaption {
+  margin-top: .75rem;
+  color: var(--color-subtle);
+  font-size: .85rem;
+  text-align: center;
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
