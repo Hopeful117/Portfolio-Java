@@ -51,7 +51,7 @@ import { PublicArticleDetail } from '../core/public-api.models';
     .article-body :where(h2) { font-family: var(--font-display); font-size: 2rem; font-weight: 500; }
     .article-body :where(h3) { font-size: 1.35rem; }
     .article-body :where(a) { color: var(--accent); }
-    .article-body :where(img) { max-width: 100%; height: auto; border-radius: var(--radius-sm); }
+    .article-body :where(img) {width:100%; max-width: 100%; height: auto; border-radius: var(--radius-sm);margin-left:0; }
     .article-body :where(figure) { margin: 2rem 0; }
     .article-body :where(figcaption) { color: var(--color-subtle); font-size: .85rem; text-align: center; }
     .article-body :where(pre) { overflow-x: auto; max-width: 100%; padding: 1.2rem; color: #dce8f6; background: #0a0f16; border: 1px solid var(--line); border-radius: var(--radius-sm); font: .88rem/1.6 var(--font-mono); }
